@@ -6,9 +6,9 @@ let TOTAL_CARD_INDEX = 0;   // 카드 스토리지에 있는 총 카드의 개�
 const YOUR_BASE = 0;
 let hand_arr = [8]; // 핸드에 있는 패가 실제로 구현될 배열 // 아직 구현안함
 let TEMP_CARD_INDEX = 0; // 현재 덱에 있는 개수만큼만 드로우하기 위해 일시적으로 만들어놈
-let SUMMON_FLAG = 0;
 let CUR_CARD; // 현재 선택된 카드
 let CUR_SEL; // 현재 선택된 셀
+let SPAWN_LOCK = true;
 
 let hand_locker = document.getElementById("hand_lock");
 let board_locker = document.getElementById("board_lock");
@@ -250,6 +250,7 @@ function Active_Card(){
         
         if(YOUR_BASE==0) board_locker.style.left = '21em';
         else if(YOUR_BASE==1) board_locker.style.left = '11em';
+        SPAWN_LOCK = true;
         
     }
 
@@ -258,40 +259,17 @@ function selectSel(i,j){
 
     let sel = document.getElementById("sel"+i+","+j);
 
-    // 셀을 선택한 후 한번 더 클릭했다면
-    if(SUMMON_FLAG==1){
+    if(SPAWN_LOCK){
+    
+        if(YOUR_BASE==0)    sel.style.backgroundColor = 'aqua';
+        else if(YOUR_BASE==1) sel.style.backgroundColor = 'pink';
 
-        // 만약 선택한 셀을 한번 더 클릭했다면
-        if(i+","+j == CUR_SEL){
-            if(YOUR_BASE==0)    sel.style.backgroundColor = 'aqua';
-            else if(YOUR_BASE==1) sel.style.backgroundColor = 'pink';
+        sel.innerText = getCard_storage(CUR_CARD).name;
+        console.log("소환");
 
-            sel.innerText = getCard_storage(CUR_CARD).name;
-            console.log("소환");
-            SUMMON_FLAG = 0;
-
-            hand_locker.style.display = 'none';
-            board_locker.style.display = 'none';
-        }
-        // 만약 선택한 셀이 아닌 다른 셀을 선택했다면
-        else{   
-
-            // 진영에 따라 셀 이전 선택 셀 초기화와 현재 선택 셀 표시
-            if(YOUR_BASE==0)
-            document.getElementById("sel"+CUR_SEL).style.backgroundColor = 'aqua';
-            else if(YOUR_BASE==1)
-            document.getElementById("sel"+CUR_SEL).style.backgroundColor = 'pink';
-
-            sel.style.backgroundColor = 'yellow';
-            CUR_SEL = i+","+j;
-        }
-    }
-    // 처음 실행 -> 선택한 셀 강조 표시
-    else if(SUMMON_FLAG==0){
-        sel.style.backgroundColor = 'yellow';
-
-        CUR_SEL = i+","+j;
-        SUMMON_FLAG = 1;
+        hand_locker.style.display = 'none';
+        board_locker.style.display = 'none';
+        SPAWN_LOCK = false;
     }
 
 }
