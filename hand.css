@@ -1,0 +1,108 @@
+
+#hand{
+    position: absolute;
+    border:1px solid black;
+    width:58em;
+    height:20em;
+    left:1.75em;
+    bottom:-0.1em;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.card {
+    position:absolute;
+    border:1px solid black;
+    width:10em;
+    height:15em;
+    transform-origin: center;
+    transition: transform 0.2s ease-out;
+    cursor:pointer;
+}
+.card:hover{
+    z-index : 10;
+    transform: scale(1.2);
+}
+.cardBubble{
+    position:absolute;
+    border:1px solid black;
+    border-radius:50%;
+    font-size:1.75em;
+    width:1.5em;
+    height:1.5em;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: white;
+}
+.cardLabel{
+    position:absolute;
+    width: 100%;
+    text-align:center;
+    font-size:1.5em;
+    top:1em;
+}
+.cardCost{
+    left:-0.75em;
+    top:-0.75em;
+}
+.cardAtk{
+    bottom:0em;
+    left:0em;
+}
+.cardDef{
+    bottom:0em;
+    right:0em;
+}
+.btn{
+    position:absolute;
+    width:10em;
+    height:5em;
+
+    background-color:white;
+    cursor:pointer;
+}
+#hand_lock{
+    position:absolute;
+    width:58em;
+    height:20em;
+    left:1.75em;
+    bottom:-0.1em;
+    overflow:hidden;
+    background-color: lightgray;
+    opacity:0.6;
+    z-index:100;
+
+    display:none;
+}
+#hand_lock::before{
+    position: absolute;
+    content:'';
+    width:100%;
+    height:3em;
+    top:10em;
+    left:-14.5em;
+    transform: rotate(315deg);
+
+    background-color: gray;
+}
+#hand_lock::after{
+    position: absolute;
+    content:'';
+    width:100%;
+    height:3em;
+    top:10em;
+    left:11.5em;
+    transform: rotate(315deg);
+
+    background-color: gray;
+}
+#lock_label{
+    position: absolute;
+    font-size:2.5em;
+    width:100%;
+    text-align: center;
+    top:42.5%;
+    z-index:101;
+}
