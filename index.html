@@ -1,15 +1,30 @@
 <!doctype html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <title>니나브섭 일격 스커</title>
+    <link rel="stylesheet" type="text/css" href="board.css">
+    <link rel="stylesheet" type="text/css" href="hand.css">
+    
+    <title>띠용</title>
     <meta charset="UTF-8">
 </head>
 <body>
-    <div class="container">
-        <div class="layer1"></div>
-        <div class="layer2"></div>
-    </div>
+   <div class="screen">
+        <div class="boardWrap">
+            <div id="board">
+                <div id="BlueTower"></div>
+                <div id="RedTower"></div>
+            </div>
+            <div id="board_lock"></div>
+        </div>
+        
+        <div id="hand"></div>
+        <div id="hand_lock">
+            <span id="lock_label"></span>
+        </div>
+    </div>  
+
+    <input type="button" value="add" class="btn" onclick="addCard()">
+    <input type="button" value="remove" class="btn" style="left:11em;" onclick="removeCard()">
 
     <script src="code.js"></script>
 </body>
