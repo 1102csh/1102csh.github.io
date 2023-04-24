@@ -10,8 +10,9 @@ let CUR_CARD; // 현재 선택된 카드
 let CUR_SEL; // 현재 선택된 셀
 let SPAWN_LOCK = true;
 
-let hand_locker = document.getElementById("hand_lock");
-let board_locker = document.getElementById("board_lock");
+const hand_locker = document.getElementById("hand_lock");
+const board_locker = document.getElementById("board_lock");
+const locker_label = document.getElementById("lock_label");
 
 function setup(){
     
@@ -243,7 +244,6 @@ function Active_Card(){
         else if(YOUR_BASE==1) range=6;
 
         hand_locker.style.display = 'block';
-        let locker_label = document.getElementById("lock_label");
         locker_label.textContent = "생성할 셀을 선택해주세요";
         
         board_locker.style.display = 'block';
@@ -260,16 +260,18 @@ function selectSel(i,j){
     let sel = document.getElementById("sel"+i+","+j);
 
     if(SPAWN_LOCK){
-    
-        if(YOUR_BASE==0)    sel.style.backgroundColor = 'aqua';
-        else if(YOUR_BASE==1) sel.style.backgroundColor = 'pink';
 
-        sel.innerText = getCard_storage(CUR_CARD).name;
-        console.log("소환");
+        if(sel.textContent==""){
+            sel.innerText = getCard_storage(CUR_CARD).name;
+            console.log("소환");
 
-        hand_locker.style.display = 'none';
-        board_locker.style.display = 'none';
-        SPAWN_LOCK = false;
+            hand_locker.style.display = 'none';
+            board_locker.style.display = 'none';
+            SPAWN_LOCK = false;
+        }
+        else{
+            locker_label.innerText = "선택한 셀에 이미 하수인이 존재합니다.";
+        }
     }
 
 }
