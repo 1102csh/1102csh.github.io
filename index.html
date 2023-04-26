@@ -1,16 +1,33 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="board.css">
-    <link rel="stylesheet" type="text/css" href="hand.css">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="./css/style.css" type="text/css" rel="stylesheet">
+    <link href="./css/board.css" type="text/css" rel="stylesheet">
+    <link href="./css/hand.css" type="text/css" rel="stylesheet">
 
-    
-    <title>띠용</title>
     <meta charset="UTF-8">
+    <title>test</title>
 </head>
 <body>
-   <div class="screen">
+    <div class="screen">
+        <div class="sky"></div>
+        <div class="ground"></div>
+        <!--<img class="bgPicture" src="./asset/bg1.png">-->
+        <!--<img class="bgPicture" src="./asset/bg2.png">-->
+
+        <div class="manaWrap">
+            <span class="crystal"></span>
+            <span class="mana" id="mana1"></span>
+            <span class="mana" id="mana2"></span>
+            <span class="mana" id="mana3"></span>
+            <span class="mana" id="mana4"></span>
+            <span class="mana" id="mana5"></span>
+            <span class="mana" id="mana6"></span>
+            <span class="mana" id="mana7"></span>
+            <span class="mana" id="mana8"></span>
+            <span class="mana" id="mana9"></span>
+            <span class="mana" id="mana10"></span>
+        </div>
         <div class="boardWrap">
             <div id="board">
                 <div id="BlueTower"></div>
@@ -23,12 +40,16 @@
         <div id="hand_lock">
             <span id="lock_label"></span>
         </div>
+
+        <div id="infoWrap">
+            <span class="infoTop"></span>
+            <span class="infoBottom"></span>
+        </div>
     </div>  
 
     <input type="button" value="add" class="btn" onclick="addCard()">
+    <input type="button" value="remove" class="btn" style="left:11em;" onclick="removeCard()">
 
-    <script src="code.js"></script>
-</body>
-</html>
+    <script src="./code.js"></script>
 </body>
 </html>
