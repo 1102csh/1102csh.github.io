@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'DNFBitBitTTF';  
-    src: url("../asset/DNFBitBitTTF.ttf"); /* 가는글씨체 웹폰트주소 지정*/
+    src: url("DNFBitBitTTF.ttf"); /* 가는글씨체 웹폰트주소 지정*/
 }
 html{
     user-select: none;
