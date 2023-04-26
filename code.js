@@ -5,10 +5,30 @@ let selected_card;  // 사용하는 핸드의 인덱스 / 아래 hand_arr과 연
 let TOTAL_CARD_INDEX = 0;   // 카드 스토리지에 있는 총 카드의 개수
 const YOUR_BASE = 0;
 let hand_arr = [8]; // 핸드에 있는 패가 실제로 구현될 배열 // 아직 구현안함
+let hand_index = 0;
 let TEMP_CARD_INDEX = 0; // 현재 덱에 있는 개수만큼만 드로우하기 위해 일시적으로 만들어놈
 let CUR_CARD; // 현재 선택된 카드
 let CUR_SEL; // 현재 선택된 셀
 let SPAWN_LOCK = true;
+let mana = 3;
+
+let tile = [32];
+
+for(let i=0;i<hand_arr.length;i++){
+    hand_arr[i] = -1;
+}
+for(let i=0;i<5;i++){
+    tile[i] = [8];
+   for(let j=0;j<8;j++){
+        tile[i][j] = {
+            name : "",
+            index : -1,
+            tag : "",
+            atk : 0,
+            def : 0,
+        };
+   }
+}
 
 const hand_locker = document.getElementById("hand_lock");
 const board_locker = document.getElementById("board_lock");
@@ -45,6 +65,11 @@ function setup(){
             const temp = document.getElementById("sel"+i+","+j);
         }
     } 
+
+    for(let i=0;i<10;i++){
+        let setMana = document.getElementById("mana"+(i+1));
+        setMana.style.left = 3*i+2+'em';
+    }
 }
 
 const maxAngle = 25; // 최대 각도를 설정
@@ -222,6 +247,8 @@ function addCard() {
             Active_Card();
         }
   
+        hand_arr[hand_index] = cardInfo.index;
+        hand_index ++;
         isDragging = false;
         animation_flag = true;
         updateCards();
@@ -262,18 +289,35 @@ function selectSel(i,j){
     if(SPAWN_LOCK){
 
         if(sel.textContent==""){
-            sel.innerText = getCard_storage(CUR_CARD).name;
-            console.log("소환");
+            tile[i][j].name = getCard_storage(CUR_CARD).name;
+            tile[i][j].index = getCard_storage(CUR_CARD).index;
+            tile[i][j].tag = getCard_storage(CUR_CARD).tag;
+            tile[i][j].atk = getCard_storage(CUR_CARD).atk;
+            tile[i][j].def = getCard_storage(CUR_CARD).def;
 
             hand_locker.style.display = 'none';
             board_locker.style.display = 'none';
             SPAWN_LOCK = false;
+
+            updateBoard();
         }
         else{
             locker_label.innerText = "선택한 셀에 이미 하수인이 존재합니다.";
         }
     }
 
+}
+function updateBoard(){
+    for(let i=0;i<5;i++){
+        for(let j=0;j<8;j++){
+
+            if(tile[i][j].index != -1){
+                let sel = document.getElementById("sel"+i+","+j);
+                sel.innerHTML = "<div class='minion'><span class='hpbar'><span class='hp' id='hpbar"+i+j
+                +"'></span></span></div>";
+            }
+        }
+    }
 }
 function removeCard(card) {
     const container = document.querySelector('#hand');
