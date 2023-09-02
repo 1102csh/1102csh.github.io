@@ -1,0 +1,131 @@
+#range{
+    position: absolute;
+    border-radius:50%;
+    opacity:0.3;
+    background-color:green;
+    width:10em;
+    height:10em;
+    z-index:10;
+}
+@keyframes spin{
+    0%{
+        transform:rotate(0deg);
+    }
+    100%{
+        transform:rotate(360deg);
+    }
+}
+.common{
+    background-color:gray;
+}
+.magic{
+    background-color:greenyellow;
+}
+.rare{
+    background-color:skyblue;
+}
+.unique{
+    background-color:yellow;
+}
+.epic{
+    background-color:red;
+}
+.arc{
+    position: absolute;
+    border-radius:50%;
+    width:4em;
+    height:4em;
+    left:0.4em;
+    top:0.4em;
+}
+.square{
+    position: absolute;
+    width:4em;
+    height:4em;
+    left:0.4em;
+    top:0.4em;
+}
+.triangle{
+    position:absolute;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    width:4em;
+    height:4em;
+    left:0.4em;
+    top:0.4em;
+}
+.diamond{
+    position:absolute;
+    clip-path: polygon(0 50%, 50% 0, 100% 50%, 50% 100%);
+    width:4em;
+    height:4em;
+    left:0.4em;
+    top:0.4em;
+}
+.star{
+    position:absolute;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    width:4em;
+    height:4em;
+    left:0.4em;
+    top:0.4em;
+}
+.pentagon{
+    position:absolute;
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+    width:4em;
+    height:4em;
+    left:0.4em;
+    top:0.4em;
+}
+.jewel{
+    position:absolute;
+    clip-path: polygon(0 35%, 25% 0%, 75% 0, 100% 35%, 50% 100%);
+    width:4em;
+    height:4em;
+    left:0.4em;
+    top:0.4em;
+}
+.cross{
+    position:absolute;
+    clip-path: polygon(0 35%, 35% 35%, 35% 0%, 65% 0%, 65% 35%, 100% 35%, 100% 65%, 65% 65%, 65% 100%, 35% 100%, 35% 65%, 0 65%);
+    width:4em;
+    height:4em;
+    left:0.4em;
+    top:0.4em;
+}
+.mini{
+    position:absolute;
+    z-index:1;
+    width:2em;
+    height:2em;
+    background-color:white;
+    cursor:pointer;
+    left:1em;
+}
+.mini:hover{
+    background-color:black;
+}
+.mini:nth-child(9){
+    top:26em;
+}
+.mini:nth-child(10){
+    top:29.4em;
+}
+.mini:nth-child(11){
+    top:32.8em;
+}
+.mini:nth-child(12){
+    top:36.5em;
+}
+.mini:nth-child(13){
+    top:40em;
+}
+.mini:nth-child(14){
+    top:43.3em;
+}
+.mini:nth-child(15){
+    top:47em;
+}
+.mini:nth-child(16){
+    top:50.5em;
+}

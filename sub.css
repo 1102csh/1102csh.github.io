@@ -1,0 +1,228 @@
+@keyframes Arrow_right{
+    0%{
+        opacity:1.0;
+        transform:translateX(0px);
+    }
+    100%{
+        opacity:0.0;
+        transform:translateX(30px);
+    }
+}
+.sub1{
+    position:absolute;
+    top:14em;
+    left:6em;
+    font-size:1.5em;
+    color:yellow;
+}
+.sub1 span:nth-child(1){
+    position:absolute;
+    animation:Arrow_right 1.5s infinite linear;
+}
+.sub1 span:nth-child(2){
+    position:absolute;
+    animation:Arrow_right 1.5s infinite linear;
+    animation-delay:0.1s;
+    left:1.5em;
+}
+.sub1 span:nth-child(3){
+    position:absolute;
+    animation:Arrow_right 1.5s infinite linear;
+    animation-delay:0.2s;
+    left:3em;
+}
+.sub2{
+    position:absolute;
+    top:14em;
+    left:30em;
+    font-size:1.5em;
+    color:yellow;
+}
+.sub2 span:nth-child(1){
+    position:absolute;
+    animation:Arrow_right 1.5s infinite linear;
+}
+.sub2 span:nth-child(2){
+    position:absolute;
+    animation:Arrow_right 1.5s infinite linear;
+    animation-delay:0.1s;
+    left:1.5em;
+}
+.sub2 span:nth-child(3){
+    position:absolute;
+    animation:Arrow_right 1.5s infinite linear;
+    animation-delay:0.2s;
+    left:3em;
+}
+@keyframes Arrow_down{
+    0%{
+        opacity:1.0;
+        transform:translateY(0px);
+    }
+    100%{
+        opacity:0.0;
+        transform:translateY(30px);
+    }
+}
+.sub3{
+    position:absolute;
+    left:24.5em;
+    top:8em;
+    font-size:1.5em;
+    color:yellow;
+}
+.sub3 span:nth-child(1){
+    position:absolute;
+    animation:Arrow_down 1.5s infinite linear;
+    top:-3em;
+}
+.sub3 span:nth-child(2){
+    position:absolute;
+    animation:Arrow_down 1.5s infinite linear;
+    animation-delay:0.1s;
+    top:-1.5em;
+}
+.sub3 span:nth-child(3){
+    position:absolute;
+    animation:Arrow_down 1.5s infinite linear;
+    animation-delay:0.2s;
+    
+}
+.sub4{
+    position:absolute;
+    left:24.5em;
+    top:33em;
+    font-size:1.5em;
+    color:yellow;
+}
+.sub4 span:nth-child(1){
+    position:absolute;
+    animation:Arrow_down 1.5s infinite linear;
+    top:-3em;
+}
+.sub4 span:nth-child(2){
+    position:absolute;
+    animation:Arrow_down 1.5s infinite linear;
+    animation-delay:0.1s;
+    top:-1.5em;
+}
+.sub4 span:nth-child(3){
+    position:absolute;
+    animation:Arrow_down 1.5s infinite linear;
+    animation-delay:0.2s;
+    
+}
+@keyframes Arrow_left{
+    0%{
+        opacity:1.0;
+        transform:translateX(0px);
+    }
+    100%{
+        opacity:0.0;
+        transform:translateX(-30px);
+    }
+}
+.sub5{
+    position:absolute;
+    left:30.5em;
+    top:24em;
+    font-size:1.5em;
+    color:yellow;
+}
+.sub5 span:nth-child(1){
+    position:absolute;
+    animation:Arrow_left 1.5s infinite linear;
+    left:3em;
+}
+.sub5 span:nth-child(2){
+    position:absolute;
+    animation:Arrow_left 1.5s infinite linear;
+    animation-delay:0.1s;
+    left:1.5em;
+}
+.sub5 span:nth-child(3){
+    position:absolute;
+    animation:Arrow_left 1.5s infinite linear;
+    animation-delay:0.2s;
+    
+}
+.sub6{
+    position:absolute;
+    left:6.5em;
+    top:24em;
+    font-size:1.5em;
+    color:yellow;
+}
+.sub6 span:nth-child(1){
+    position:absolute;
+    animation:Arrow_left 1.5s infinite linear;
+    left:3em;
+}
+.sub6 span:nth-child(2){
+    position:absolute;
+    animation:Arrow_left 1.5s infinite linear;
+    animation-delay:0.1s;
+    left:1.5em;
+}
+.sub6 span:nth-child(3){
+    position:absolute;
+    animation:Arrow_left 1.5s infinite linear;
+    animation-delay:0.2s;
+
+}
+@keyframes Arrow_up{
+    0%{
+        opacity:1.0;
+        transform:translateY(0px);
+    }
+    100%{
+        opacity:0.0;
+        transform:translateY(-30px);
+    }
+}
+.sub7{
+    position:absolute;
+    left:14.5em;
+    top:8em;
+    font-size:1.5em;
+    color:red;
+}
+.sub7 span:nth-child(1){
+    position:absolute;
+    animation:Arrow_up 1.5s infinite linear;
+}
+.sub7 span:nth-child(2){
+    position:absolute;
+    animation:Arrow_up 1.5s infinite linear;
+    animation-delay:0.1s;
+    top:-1.5em;
+}
+.sub7 span:nth-child(3){
+    position:absolute;
+    animation:Arrow_up 1.5s infinite linear;
+    animation-delay:0.2s;
+    top:-3em;
+}
+.sub8{
+    position:absolute;
+    left:14.5em;
+    top:33em;
+    font-size:1.5em;
+    color:yellow;
+}
+.sub8 span:nth-child(1){
+    position:absolute;
+    animation:Arrow_up 1.5s infinite linear;
+}
+.sub8 span:nth-child(2){
+    position:absolute;
+    animation:Arrow_up 1.5s infinite linear;
+    animation-delay:0.1s;
+    top:-1.5em;
+}
+.sub8 span:nth-child(3){
+    position:absolute;
+    animation:Arrow_up 1.5s infinite linear;
+    animation-delay:0.2s;
+    top:-3em;
+}

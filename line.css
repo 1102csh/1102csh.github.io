@@ -1,0 +1,85 @@
+.tile{
+    cursor:pointer;
+    color:white;
+    position:relative;
+    width:4.87em;
+    height:4.9em;
+    background-color:rgb(85, 44, 17);
+    border:0.05em solid black;
+}
+.tile:nth-child(n):hover{
+    border:0.05em solid white;
+    background-color:rgb(65, 31, 9);
+}
+.allline{
+    display:flex;
+    flex-wrap:wrap;
+    position:absolute;
+    border:1px solid black;
+    background-color:greenyellow;
+    user-select: none;
+}
+.line0{
+    width:15em;
+    height:20em;
+    left:5em;
+    top:-0.05em;
+}
+.line1{
+    left:25em;
+    width:10em;
+    height:20em;
+    top:-0.05em;
+}
+.line2{
+    left:40em;
+    top:5em;
+    width:15em;
+    height:15em;
+}
+.line3{
+    top:25em;
+    left:-0.05em;
+    width:20em;
+    height:10em;
+}
+.line4{
+    top:25em;
+    left:25em;
+    width:10em;
+    height:10em;
+}
+.line5{
+    left:39.95em;
+    top:25em;
+    width:20em;
+    height:10em;
+}
+.line6{
+    left:5em;
+    top:40em;
+    width:15em;
+    height:15em;
+}
+.line7{
+    left:25em;
+    top:39.95em;
+    width:10em;
+    height:20em;
+}
+.line8{
+    left:40em;
+    top:40em;
+    width:15em;
+    height:15em;
+}
+.end{
+    position:absolute;
+    left:20.05em;
+    top:-0.05em;
+    background-color:black;
+    width:4.9em;
+    height:5em;
+    border-left:1px solid black;
+    border-right:1px solid black;
+}
