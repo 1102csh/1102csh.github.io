@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>index</title>
+    <meta charset="UTF-8">
+    <link href="./style.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="totalWrap">
+        <div class="content">
+            <div id="stage">
+                <div class="playerFov">
+                    <div class="FovBox">
+                        <Image src="./assets/공격력.png" class="FovIcon"></Image>
+                        <div id="FovLabel">10</div>
+                    </div>
+                    <div class="FovBox">
+                        <Image src="./assets/방어력.png" class="FovIcon"></Image>
+                        <div id="FovLabel">10</div>
+                    </div>
+                    <div class="FovBox">
+                        <Image src="./assets/민첩.png" class="FovIcon"></Image>
+                        <div id="FovLabel">10</div>
+                    </div>
+                    <div class="FovBox">
+                        <Image src="./assets/크리티컬.png" class="FovIcon"></Image>
+                        <div id="FovLabel">10</div>
+                    </div>
+                </div>
+
+                <div class="characterStage">
+                    <div class="characterBox">
+                        <div id="player"></div>
+
+                        <div class="HPbar">
+                            <div id="playerHPLabel" class="HPLabel"></div>
+                            <div id="playerHP" class="HP"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="characterStage">
+                    <div class="characterBox">
+                        <div id="enemy">
+                            <div id="enemySprite"></div>
+                        </div>
+
+                        <div class="HPbar">
+                            <div id="enemyHPLabel" class="HPLabel"></div>
+                            <div id="enemyHP" class="HP"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cardSection">
+            <div id="hand">
+                <div id="cardIndex">0 / 10</div>
+            </div>
+            <div class="back">
+                <input type="button" class="btn" onclick="addCard()">
+            </div>
+        </div>
+    </div>
+    <script src="./code.js"></script>
+</body>
+</html>
