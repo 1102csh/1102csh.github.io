@@ -1,26 +1,71 @@
 let deck = [];  // 실제 덱 구성
 let deck_arr = [];  // 게임을 위한 덱 사본
-let hand_arr = [8]; // 핸드에 있는 패가 실제로 구현될 배열
+let hand_arr = []; // 핸드에 있는 패가 실제로 구현될 배열
 let handIndex = 0;
 let selectedCard;
 let TOTAL_CARD_INDEX = 0;
 
+let gameData = null;
+
+const gameController = () => {
+    gameManager();
+    EnemySprite("idle");
+}
 const gameManager = () => {
+    // gameData가 null이면 초기화
+    if (gameData === null) {
+
+        gameData = {
+            playerAtk: 10,
+            playerMaxHP: 50,
+            playerHP: 50,
+            enemyMaxHP: 100,
+            enemyHP: 100,
+            curEnemy: "slime",
+            applyHP
+        };
+
+        gameData.applyHP();
+    }
+
+    return gameData;
+}
+
+function applyHP() {
+    let { playerMaxHP, playerHP, enemyMaxHP, enemyHP } = this;
+
+    //console.log("player Max Hp : " + playerMaxHP + " , player Cur Hp : " + playerHP);
+    //console.log("enemy Max Hp : " + enemyMaxHP + " , enemy Cur Hp : " + enemyHP);
+
+    // player hp apply
     const playerHPLabel = document.getElementById("playerHPLabel");
-    const enemyHPLabel = document.getElementById("enemyHPLabel");
-
     const playerHPBar = document.getElementById("playerHP");
-    const enemyHPBar = document.getElementById("enemyHP");
-
-    let playerHP = 50;
-    let enemyHP = 100;
-
-    enemyHPLabel.innerText = enemyHP;
-    enemyHPBar.style.width = '100%';
 
     playerHPLabel.innerText = playerHP;
-    playerHPBar.style.width = '100%';
+    playerHPBar.style.width = ((playerHP / playerMaxHP) * 100) + '%';
+
+    if (playerHP <= 0) {
+        playerHPBar.style.width = '0%';
+    }
+
+    // enemy hp apply
+    const enemyHPLabel = document.getElementById("enemyHPLabel");
+    const enemyHPBar = document.getElementById("enemyHP");
+
+    enemyHPLabel.innerText = enemyHP;
+    enemyHPBar.style.width = ((enemyHP / enemyMaxHP) * 100) + '%';
+
+    if (enemyHP <= 0) {
+        enemyHPBar.style.width = '0%';
+    }
+
+    const enemyPreHP = document.getElementById("enemyPreHP");
+    setTimeout(() => {
+       enemyPreHP.style.width = (enemyHP/enemyMaxHP)*100+'%';
+       //console.log("enemyPreHP : "+(enemyHP/enemyMaxHP)*100)
+    }, 300);
 }
+
 function addCard() {
     //console.log("addCard requset!  current handIndex : "+handIndex);
 
@@ -32,7 +77,7 @@ function addCard() {
 
     let randNum = Math.floor(Math.random()*TOTAL_CARD_INDEX);
 
-    console.log("덱에 남은 카드 개수 : "+deck.length);
+    //console.log("덱에 남은 카드 개수 : "+deck.length);
     // 새로운 카드를 생성합니다.
     const newCard = document.createElement('div');
     newCard.id = `card${handIndex}`;
@@ -95,13 +140,11 @@ function removeCard() {
     // 삭제할 카드가 실제로 존재하는지 확인
     if (card) {
         container.removeChild(card);
+        hand_arr.splice(selectedCard,1);
         handIndex--;
 
         const cards = document.querySelectorAll('.card');
         const cardIndex = cards.length;
-
-        // selectedCard 변수 업데이트
-        selectedCard = null;
 
         // 카드 인덱스 재정렬
         cards.forEach((card, index) => {
@@ -155,7 +198,7 @@ document.addEventListener('mousedown', (event) => {
         isDragging = true;
         // 클릭된 카드의 인덱스를 추출합니다.
         selectedCard = Array.from(draggedCard.parentNode.children).indexOf(draggedCard) - 1;
-        console.log("선택된 카드 : " + selectedCard);
+        //console.log("선택된 카드 : " + selectedCard);
 
         const rect = draggedCard.getBoundingClientRect();
         dragOffsetX = event.clientX;
@@ -195,15 +238,14 @@ document.addEventListener('mouseup', (event) => {
     ) {
         draggedCard.style.left = '0px';
         draggedCard.style.top = '0px';
-        console.log("카드를 사용하지 않았음!");
+        //console.log("카드를 사용하지 않았음!");
     } else {
         document.getElementById('hand').appendChild(draggedCard);
 
+        Active_Card(selectedCard); // 이 코드는 정의되지 않았으므로 주석 처리합니다.
         removeCard();
-
-        console.log("카드를 사용했음!");
+        //console.log("카드를 사용했음!");
         // CUR_CARD = cardInfo.index; // 이 코드와 관련된 변수도 정의되지 않았으므로 주석 처리합니다.
-        Active_Card(); // 이 코드는 정의되지 않았으므로 주석 처리합니다.
     }
 
     isDragging = false;
@@ -228,26 +270,42 @@ document.addEventListener('mousemove', (event) => {
     }
 });
 
-let totalFrames = 0;
-let frame = 0;
+let enemyAnimation;
 
-function EnemySprite(enemy,status) {
+function EnemySprite(status) {
 
     const enemySprite = document.querySelector("#enemySprite");
-    
-    if(enemy == "slime"){
+    let totalFrames = 0;
+    let frame = 0;
+
+    let curEnemy = gameManager().curEnemy;
+    //console.log("curEnemy : "+curEnemy);
+    // 애니메이션 중지
+    clearInterval(enemyAnimation);
+
+    if(curEnemy == "slime"){
         const slimeAnimation = () => {
             //console.log("슬라임 애니메이션 실행중");
 
             if (status == "idle") {
                 totalFrames = 8;
-                // 현재 프레임의 이미지로 변경
                 enemySprite.style.backgroundImage = `url('./assets/slime/Idle_${(frame+1)}.png')`;
             }
             else if (status == "attack") {
                 totalFrames = 5;
-                // 현재 프레임의 이미지로 변경
                 enemySprite.style.backgroundImage = `url('./assets/slime/Attack_3_${(frame+1)}.png')`;
+            }
+            else if (status == "hurt") {
+                totalFrames = 6;
+                enemySprite.style.filter = 'opacity(0.5)';
+                enemySprite.style.backgroundImage = `url('./assets/slime/hurt_${(frame+1)}.png')`;
+
+                if(frame+1 >= totalFrames){
+                    //console.log("idle 애니메이션 실행");
+                    enemySprite.style.filter = 'opacity(1)';
+                    clearInterval(enemyAnimation);
+                    EnemySprite("idle");
+                }
             }
 
             frame++;
@@ -255,18 +313,87 @@ function EnemySprite(enemy,status) {
                 frame = 0;
             }
 
-            setTimeout(slimeAnimation, 150);
+            //enemyAnimation = setTimeout(slimeAnimation, 150);
         }
 
-        slimeAnimation();
+        enemyAnimation = setInterval(slimeAnimation, 150);
     }
 }
-EnemySprite("slime","idle");
 
-function Active_Card() {
-    //let card = getCard_storage(CUR_CARD);
-    console.log("카드 효과 발동");
+function Active_Card(cardIndex) {
+    let card = getCard_storage(hand_arr[cardIndex].index); // 핸드에서 선택한 카드의 정보를 스토리지에서 가져옴
+    
+    if (card.type == "attack") {
+        const enemyPreHp = document.getElementById("enemyPreHP");
+        enemyPreHp.style.width = (gameData.enemyHP/gameData.enemyMaxHP)*100 + '%';
 
+        // Hurt 애니메이션 재생
+        EnemySprite("hurt");
+
+        // 기존의 Atk 변수는 필요 없으므로 제거
+        let Atk = gameData.playerAtk;
+        let enemyHP = gameData.enemyHP;
+
+        // 적에게 피해를 입히는 로직 추가
+        let damageRate = card.atk / 100;
+        //console.log("damageRate : "+damageRate);
+
+        let damage = Math.floor(Atk * damageRate);
+        // 공격 횟수 처리
+        let repeatCount = 1; // 기본적으로 한 번만 공격
+        if (card.tag.includes("회공격")) {
+            repeatCount = parseInt(card.tag.split("회공격")[0]); // 태그에서 공격 횟수를 추출
+        }
+
+        // 반복해서 공격하기
+        for (let i = 0; i < repeatCount; i++) {
+            // 각 반복마다 일정한 시간 간격을 두고 공격 실행
+            setTimeout(() => {
+                enemyHP = enemyHP - damage; // 피해 입히기
+                // 변경된 데이터를 applyHP 함수에 반영
+                // 피해의 수치를 표시하는 엘리먼트 생성
+                showDamageNumber(damage);
+
+                gameData.enemyHP = enemyHP;
+                gameData.applyHP(); // applyHP 함수 호출
+            }, i * 300); // 각 반복마다 1초씩 딜레이를 줌 (1000ms = 1초)
+        }
+    }
+}
+
+// 피해의 수치를 표시하는 함수
+function showDamageNumber(damage) {
+    // 텍스트 엘리먼트 생성
+    const damageText = document.createElement('div');
+    damageText.classList.add('damage-text'); // CSS 클래스 추가
+
+    // 텍스트 내용 설정
+    damageText.textContent = '-' + damage;
+
+    // fade in - fade out 이펙트
+    setTimeout(() => {
+        damageText.style.filter = 'opacity(1)';
+
+        setTimeout(()=>{
+            damageText.style.filter = 'opacity(0)';
+        },1000);
+    }, 1);
+
+    // 적절한 위치에 추가
+    const container = document.querySelector('#enemy'); // 게임 컨테이너의 클래스명
+    container.appendChild(damageText);
+
+    let posY = 0;
+    let damageFontEffect = setInterval(function(){
+        damageText.style.transform = 'translateY('+posY+'px)';
+        posY = posY - 2;
+    },50);
+
+    // 일정 시간이 지난 후에 텍스트 엘리먼트 제거
+    setTimeout(() => {
+        clearInterval(damageFontEffect);
+        damageText.remove();
+    }, 1500); // 1초 후에 제거 (1000ms = 1초)
 }
 
 function getCard_storage(index) {
@@ -296,7 +423,7 @@ function getCard_storage(index) {
             card.type = "attack";
             card.tag = "";
             card.cost = 1;
-            card.atk = 0;
+            card.atk = 100;
             card.def = 0;
             card.info = "적에게 공격력의 100%만큼의 물리피해를 입힙니다.";
             break;
@@ -304,9 +431,9 @@ function getCard_storage(index) {
             card.name = "연속 베기";
             card.index = index;
             card.type = "attack";
-            card.tag = "";
+            card.tag = "2회공격";
             card.cost = 1;
-            card.atk = 1;
+            card.atk = 100;
             card.def = 1;
             card.info = "적에게 공격력의 n%만큼의 물리피해를 2회 입힙니다.";
             break;
@@ -555,4 +682,4 @@ function CHECK_TOTAL_CARD_INDEX(){
     }
 }
 CHECK_TOTAL_CARD_INDEX();
-gameManager();
+gameController();
