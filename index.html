@@ -12,21 +12,32 @@
             <div id="stage">
                 <div class="playerFov">
                     <div class="FovBox">
-                        <Image src="./assets/공격력.png" class="FovIcon"></Image>
+                        <img src="./assets/공격력.png" class="FovIcon"></img>
                         <div id="playerAtk" class="FovLabel">10</div>
                     </div>
                     <div class="FovBox">
-                        <Image src="./assets/방어력.png" class="FovIcon"></Image>
+                        <img src="./assets/방어력.png" class="FovIcon"></img>
                         <div id="playerDef" class="FovLabel">10</div>
                     </div>
                     <div class="FovBox">
-                        <Image src="./assets/민첩.png" class="FovIcon"></Image>
+                        <img src="./assets/민첩.png" class="FovIcon"></img>
                         <div id="playerSp" class="FovLabel">10</div>
                     </div>
                     <div class="FovBox">
-                        <Image src="./assets/크리티컬.png" class="FovIcon"></Image>
+                        <img src="./assets/크리티컬.png" class="FovIcon"></img>
                         <div id="playerCt" class="FovLabel">10</div>
                     </div>
+                </div>
+
+                <div class="enemyAbility">
+                    <div class="enemyAbilityPanel">
+                        <div class="enemyAbilityText">제약</div>
+                        <div class="enemyAbilityText">슬라임의 방어력은 0이지만 <br>받는 피해가 20% 감소합니다</div>
+                    </div>
+
+                    <img src="./assets/caution.png" class="enemyAbilityImg" alt="제약"></img>
+
+                    <script src="./sub.js"></script>
                 </div>
 
                 <div class="characterStage">
@@ -45,6 +56,8 @@
                     <div class="characterBox">
                         <div id="enemy">
                             <div id="enemySprite"></div>
+
+                            <img src="./assets/slash.png" id="playerEffect"></img>
                         </div>
 
                         <div class="HPbar">
