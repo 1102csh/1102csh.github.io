@@ -10,6 +10,18 @@ let gameData = null;
 const gameController = () => {
     gameManager();
     EnemySprite("idle");
+
+    const panel = document.querySelector('.enemyAbilityPanel');
+    const enemyAbilityText = panel.querySelectorAll('.enemyAbilityText');
+    enemyAbilityText.forEach(text => {
+        text.style.filter = 'opacity(1)';
+    });
+
+    setTimeout(() => {
+        enemyAbilityText.forEach(text => {
+            text.style.filter = 'opacity(0)';
+        });
+    }, 5000);
 }
 const gameManager = () => {
     // gameData가 null이면 초기화
@@ -324,13 +336,13 @@ function Active_Card(cardIndex) {
     let card = getCard_storage(hand_arr[cardIndex].index); // 핸드에서 선택한 카드의 정보를 스토리지에서 가져옴
     
     if (card.type == "attack") {
+        const playerEffect = document.getElementById("playerEffect");
         const enemyPreHp = document.getElementById("enemyPreHP");
-        enemyPreHp.style.width = (gameData.enemyHP/gameData.enemyMaxHP)*100 + '%';
+        enemyPreHp.style.width = (gameData.enemyHP/gameData.enemyMaxHP)*100 + '%';     
 
         // Hurt 애니메이션 재생
         EnemySprite("hurt");
 
-        // 기존의 Atk 변수는 필요 없으므로 제거
         let Atk = gameData.playerAtk;
         let enemyHP = gameData.enemyHP;
 
@@ -349,6 +361,16 @@ function Active_Card(cardIndex) {
         for (let i = 0; i < repeatCount; i++) {
             // 각 반복마다 일정한 시간 간격을 두고 공격 실행
             setTimeout(() => {
+
+                // 공격 이펙트
+                let effectDeg = (Math.floor(Math.random()*4)+1) * 90 ;
+                playerEffect.style.display = 'block';
+                playerEffect.style.transform = 'rotate('+effectDeg+'deg)'
+
+                setTimeout(() => {
+                    playerEffect.style.display = 'none';
+                }, 50);
+
                 enemyHP = enemyHP - damage; // 피해 입히기
                 // 변경된 데이터를 applyHP 함수에 반영
                 // 피해의 수치를 표시하는 엘리먼트 생성
@@ -356,6 +378,7 @@ function Active_Card(cardIndex) {
 
                 gameData.enemyHP = enemyHP;
                 gameData.applyHP(); // applyHP 함수 호출
+
             }, i * 300); // 각 반복마다 1초씩 딜레이를 줌 (1000ms = 1초)
         }
     }
@@ -631,9 +654,9 @@ function getCard_storage(index) {
             card.name = "칼날비";
             card.index = index;
             card.type = "attack";
-            card.tag = "";
+            card.tag = "3회공격";
             card.cost = 0;
-            card.atk = 0;
+            card.atk = 50;
             card.def = 0;
             card.info = "적에게 공격력의 n%만큼의 피해를 3번 입힙니다.";
             break;
