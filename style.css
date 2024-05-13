@@ -90,6 +90,12 @@
     align-items: center;
     overflow: hidden;
 }
+#enemyIntent {
+    color: orange;
+    font-size: 1.3em;
+    margin-bottom: 3em;
+    filter: opacity(0.5);
+}
 #enemySprite {
     position: absolute;
     background-repeat: no-repeat;
@@ -148,6 +154,38 @@
     display: flex;
 
     height: calc(40vh - 1px);
+    background-color: var(--backgroundColor);
+}
+.manaWrap {
+    position: absolute;
+    margin-left: 1em;
+    width: 13em;
+    height: 2em;
+
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+
+    background-color: rgb(61,61,61);
+    padding-left: 1em;
+    border-radius: 5px;
+    clip-path: polygon(5% 0, 95% 0, 100% 30%, 100% 70%, 95% 100%, 5% 100%, 0% 70%, 0% 30%);
+}
+#manaIndex {
+    color: white;
+    -webkit-text-stroke: 1px black;
+    font-size: 1.2em;
+    margin-right: 0.5em;
+}
+.mana { 
+    margin-right: 0.5em;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    background-color: aquamarine;
+    width: 1.5em;
+    height: 1.5em;
+}
+#mana5 {
+    background-color: gray;
 }
 #hand {
     position: relative;
@@ -155,7 +193,6 @@
     justify-content: center;
     align-items: center;
 
-    background-color: var(--backgroundColor);
     width: 80%;
 }
 #cardIndex {
@@ -175,8 +212,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
-    background-color:  var(--backgroundColor);
 }
 .card {
     position: relative;
@@ -207,19 +242,21 @@
 }
 .cardCost {
     position: absolute;
-    border-radius: 50%;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
 
     font-size: 1.2em;
-    width: 2.5em;
-    height: 2.5em;
-    top: -1em;
-    left: -1em;
+    width: 2em;
+    height: 2em;
+    top: -0.75em;
+    left: -0.75em;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    background-color: lightgray;
+    background-color: aquamarine;
+    -webkit-text-stroke: 1px lightgray;
+
 }
 .cardInfo {
     position: absolute;
@@ -287,7 +324,7 @@
     color: red;
     font-size: 2em;
     text-align: center;
-    -webkit-text-stroke: 1px white;
+    -webkit-text-stroke: 1px gray;
 
     filter: opacity(0);
     transition: all ease 0.5s;
