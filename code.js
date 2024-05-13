@@ -310,7 +310,7 @@ function EnemySprite(status) {
             else if (status == "hurt") {
                 totalFrames = 6;
                 enemySprite.style.filter = 'opacity(0.5)';
-                enemySprite.style.backgroundImage = `url('./assets/slime/hurt_${(frame+1)}.png')`;
+                enemySprite.style.backgroundImage = `url('./assets/slime/Hurt_${(frame+1)}.png')`;
 
                 if(frame+1 >= totalFrames){
                     //console.log("idle 애니메이션 실행");
