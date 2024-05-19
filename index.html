@@ -10,6 +10,10 @@
     <div class="totalWrap">
         <div class="content">
             <div id="stage">
+
+                <input type="range" id="volumeSlider" min="0" max="100" value="50">
+                <input type="button" id="tempBgm" value="임시 BGM 재생" onclick="bgmPlay()">
+
                 <div class="playerFov">
                     <div class="FovBox">
                         <img src="./assets/공격력.png" class="FovIcon"></img>
@@ -25,10 +29,11 @@
                     </div>
                     <div class="FovBox">
                         <img src="./assets/크리티컬.png" class="FovIcon"></img>
-                        <div id="playerCt" class="FovLabel">10</div>
+                        <div id="playerCt" class="FovLabel">0</div>
                     </div>
                 </div>
 
+                <div id="systemNotice">마나가 부족합니다</div>
                 <div class="enemyAbility">
                     <div class="enemyAbilityPanel">
                         <div class="enemyAbilityText">제약</div>
@@ -39,21 +44,35 @@
 
                     <script src="./sub.js"></script>
                 </div>
-
+                
                 <div class="characterStage">
                     <div class="characterBox">
-                        <div id="player"></div>
+                        <div id="player">
+                            <!--<img id="playerBuffSprite" class="buffSprite" src="./assets/버프.png">-->
+                        </div>
 
                         <div class="HPbar">
-                            <div id="playerHPLabel" class="HPLabel"></div>
+                            <div id="playerShield" class="shield">
+                                <img class="shieldImg" src="./assets/방어도.png">
+                                <span id="playerShieldLabel" class="shieldLabel">0</span>
+                            </div>
+
+                            <div id="playerHPLabel" class="HPLabel">
+                                <span id="playerCurHP"></span>
+                                <span>&nbsp;/&nbsp;</span>
+                                <span id="playerMaxHP"></span>
+                            </div>
                             <div id="playerPreHP" class="preHP"></div>
                             <div id="playerHP" class="HP"></div>
                         </div>
                     </div>
                 </div>
 
+                <!-- 캐릭터 영역 -->
                 <div class="characterStage">
                     <div class="characterBox">
+
+                        <!-- 오브젝트 스프라이트 -->
                         <div id="enemy">
                             <div id="enemyIntent">적이 공격을 준비합니다..</div>
                             <div id="enemySprite"></div>
@@ -61,10 +80,25 @@
                             <img src="./assets/slash.png" id="playerEffect"></img>
                         </div>
 
+                        <!-- 체력 바 -->
                         <div class="HPbar">
-                            <div id="enemyHPLabel" class="HPLabel"></div>
+                            <div id="enemyShield" class="shield">
+                                <img class="shieldImg" src="./assets/방어도.png">
+                                <span id="enemyShieldLabel" class="shieldLabel">0</span>
+                            </div>
+
+                            <div id="enemyHPLabel" class="HPLabel">
+                                <span id="enemyCurHP"></span>
+                                <span>&nbsp;/&nbsp;</span>
+                                <span id="enemyMaxHP"></span>
+                            </div>
                             <div id="enemyPreHP" class="preHP"></div>
                             <div id="enemyHP" class="HP"></div>
+                        </div>
+
+                        <!-- 상태 바 -->
+                        <div id="enemyDeBuffWrap" class="DeBuffWrap">
+                            <!--<img src='./assets/약점.png' class="Debuff">-->
                         </div>
                     </div>
                 </div>
@@ -82,10 +116,13 @@
             <div id="hand">
                 <div id="cardIndex">0 / 10</div>
             </div>
-            <div class="back">
-                <input type="button" class="btn" onclick="addCard()">
-            </div>
+
+            <input type="button" class="turnEndBtn" value="턴 종료">
+            <input type="button" class="btn" onclick="addCard()">
         </div>
+
+        <audio id="effectSound"></audio>
+        <audio id="backgroundMusic"></audio>
     </div>
     <script src="./code.js"></script>
 </body>
