@@ -81,7 +81,7 @@
     width: 15em;
     height: 20em;
 }
-#enemy {
+#player,#enemy {
     position: relative;
 
     width: 100%;
@@ -90,7 +90,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 #enemyIntent {
     color: orange;
@@ -99,17 +99,7 @@
     filter: opacity(0.5);
 }
 #enemySprite {
-    position: absolute;
-    background-repeat: no-repeat;
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-    height: 40%;
-    
-    bottom: 10em;
-    transform: scale(2.5);
+    position: absolute;    
 }
 .HPbar {
     position: absolute;
@@ -120,6 +110,7 @@
     border-radius: 3px;
     bottom: 0;
     background-color: gray;
+    align-items: center;
 }
 .HPLabel {
     position: absolute;
@@ -150,7 +141,7 @@
     transition: all ease 0.5s;
     z-index: 1;
 }
-.Debuff {
+.buff {
     width: 1.5em;
     height: 1.5em;
     filter: invert(58%) sepia(3%) saturate(0%) hue-rotate(143deg) brightness(89%) contrast(92%);
