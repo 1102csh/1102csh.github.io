@@ -14,6 +14,18 @@ let playerBuffIndex = 0;
 let EnemyBuffIndex = 0;
 
 let gameData = null;    // 게임 데이터 들어갈 객체
+let playerAbility = {
+    comboMaster: true,
+    bigOne: false
+};
+
+// 요번턴에 사용한 카드 수 정보
+let useCardCurrentTurn = {
+    atkCard: 0,
+    defCard: 0,
+    magicCard: 0,
+    spellCard: 0
+};
 
 let isWait;
 let effectVolume = 0.5;
@@ -59,16 +71,17 @@ function bgmPlay() {
 const myTurn = () => {
 
     isMyTurn = true;
+    resetUseCard();
 
     /*
         본인에게 적용된 턴 제한 버프 턴 감소
     */
 
     // 기본적으로 3장의 카드 드로우
-    for(let i=0;i<3;i++){
+    for (let i = 0; i < 3; i++) {
         setTimeout(() => {
             addCard();
-        }, 200*i);
+        }, 200 * i);
     }
 
     // 마나를 기본값 5로 재 설정
@@ -80,17 +93,17 @@ const enemyTurn = () => {
         slimeFunc();
     }
 
-    if(gameData.playerHP<=0){
-        if(overcomeBuff){
+    if (gameData.playerHP <= 0) {
+        if (overcomeBuff) {
             console.log("onTrigger");
             overcomeBuff = false;
             gameData.playerAtk += 10;
             gameData.playerHP = 1;
 
-            applyStat("player","atk",10);
+            applyStat("player", "atk", 10);
             gameData.applyHP();
         }
-        else{
+        else {
             console.log("GAME OVER");
         }
     }
@@ -104,10 +117,10 @@ const slimeFunc = () => {
 
     isMyTurn = false;
 
-    if(enemyWeak!=0){
+    if (enemyWeak != 0) {
         enemyWeak = enemyWeak - 1;
 
-        if(enemyWeak<0) enemyWeak = 0;
+        if (enemyWeak < 0) enemyWeak = 0;
     }
 
     EnemySprite("attack");
@@ -115,8 +128,8 @@ const slimeFunc = () => {
     let playerHP = gameData.playerHP;
     let playerDef = gameData.playerDef;
     let enemyAtk = gameData.enemyAtk;
-    
-    let result = (enemyAtk - playerDef)*(playerWeak<=0?1:1.5);
+
+    let result = (enemyAtk - playerDef) * (playerWeak <= 0 ? 1 : 1.5);
     gameData.playerHP = playerHP - result;
     gameData.applyHP();
     showDamageNumber(result);
@@ -137,8 +150,8 @@ const gameManager = () => {
             playerCriticalDamageRate: 2,
             enemyAtk: 20,
             enemyDef: 0,
-            enemyMaxHP: 1000,
-            enemyHP: 1000,
+            enemyMaxHP: 10000,
+            enemyHP: 10000,
             enemyShield: 0,
             curEnemy: "slime",
             applyHP
@@ -285,26 +298,27 @@ function addCard() {
     const critMatch = cardStorage.info.match(critPattern);
 
     // 우선 순위가 높은 것 부터 진행
-    if(critMatch){
+    if (critMatch) {
         const percentage = parseInt(attackMatch[1]) / 100;
-        const critDamage = Math.floor(gameData.playerAtk * percentage * (enemyWeak>0?1.5:1) * gameData.playerCriticalDamageRate) + " "; 
+        const critDamage = Math.floor(gameData.playerAtk * percentage * (enemyWeak > 0 ? 1.5 : 1) * gameData.playerCriticalDamageRate) + " ";
         const replacedText = cardStorage.info.replace(critPattern, `<span class="replaced-CriticalText">${critDamage}</span><span>의 치명타 피해</span>`);
 
         cardInfo.innerHTML = replacedText; // innerHTML 사용
     }
     else if (attackMatch) {
         const percentage = parseInt(attackMatch[1]) / 100;
-        const attackValue = Math.floor(gameData.playerAtk * percentage * (enemyWeak>0?1.5:1)) + " ";
-        const replacedText = cardStorage.info.replace(attackPattern, `<span class="replaced-text">${attackValue}</span>`);
+        const cal_dmg = Math.floor(gameData.playerAtk * percentage) != 0 ? (gameData.playerAtk * percentage) : 1;
+        const attackValue = cal_dmg * (enemyWeak > 0 ? 1.5 : 1) + " ";
+        const replacedText = cardStorage.info.replace(attackPattern, `<span class="replaced-text">${Math.floor(attackValue)}</span>`);
 
-        if (cardStorage.info.match(/약점을 노출/)){
+        if (cardStorage.info.match(/약점을 노출/)) {
             const replacedText2 = replacedText.replace(/약점을 노출/, `<span style=color:purple>약점을 노출</span>`);
 
             cardInfo.innerHTML = replacedText2; // innerHTML 사용
         }
         else cardInfo.innerHTML = replacedText;
     }
-    else if (cardStorage.info.match(/약점을 노출/)){
+    else if (cardStorage.info.match(/약점을 노출/)) {
         const replacedText = cardStorage.info.replace(/약점을 노출/, `<span style=color:purple>약점을 노출</span>`);
         cardInfo.innerHTML = replacedText; // innerHTML 사용
     }
@@ -356,17 +370,18 @@ const refreshCard = () => {
         // 우선 순위가 높은 것 부터 진행
         if (critMatch) {
             const percentage = parseInt(attackMatch[1]) / 100;
-            const critDamage = Math.floor(((gameData.playerAtk * percentage) * (enemyWeak>0 ? 1.5 : 1)) * gameData.playerCriticalDamageRate * (attack_DMG_UP ? 2 : 1)) + " ";
+            const critDamage = Math.floor(((gameData.playerAtk * percentage) * (enemyWeak > 0 ? 1.5 : 1)) * gameData.playerCriticalDamageRate * (attack_DMG_UP ? 2 : 1)) + " ";
             const critReplacedText = hand_arr[i].info.replace(critPattern, `<span class="replaced-CriticalText">${critDamage}</span><span>의 치명타 피해</span>`);
 
             cardInfo.innerHTML = critReplacedText; // innerHTML 사용
         }
         else if (attackMatch) {
             const percentage = parseInt(attackMatch[1]) / 100;
-            const attackValue = Math.floor((gameData.playerAtk * percentage) * (enemyWeak>0 ? 1.5 : 1) * (attack_DMG_UP ? 2 : 1)) + " ";
+            const calDmg = Math.floor(gameData.playerAtk * percentage) != 0 ? Math.floor(gameData.playerAtk * percentage) : 1;
+            const attackValue = Math.floor(calDmg * (enemyWeak > 0 ? 1.5 : 1) * (attack_DMG_UP ? 2 : 1)) + " ";
 
             //cardInfo.innerText = hand_arr[i].info;
-            const replacedText = hand_arr[i].info.replace(attackPattern, `<span class="replaced-text">${attackValue}</span>`);
+            const replacedText = hand_arr[i].info.replace(attackPattern, `<span class="replaced-text">${Math.floor(attackValue)}</span>`);
             cardInfo.innerHTML = replacedText; // innerHTML 사용
         } else {
             cardInfo.innerText = hand_arr[i].info;   // 카드 설명
@@ -477,6 +492,7 @@ document.addEventListener('mousedown', (event) => {
             }
             else {
                 const systemNotice = document.getElementById("systemNotice");
+                systemNotice.innerText = "마나가 부족합니다";
                 systemNotice.style.filter = 'opacity(1)';
                 setTimeout(() => {
                     systemNotice.style.filter = 'opacity(0)';
@@ -512,12 +528,34 @@ document.addEventListener('mouseup', (event) => {
         draggedCard.style.top = '0px';
         //console.log("카드를 사용하지 않았음!");
     } else {
-        document.getElementById('hand').appendChild(draggedCard);
 
-        Active_Card(selectedCard); // 이 코드는 정의되지 않았으므로 주석 처리합니다.
-        removeCard();
-        //console.log("카드를 사용했음!");
-        // CUR_CARD = cardInfo.index; // 이 코드와 관련된 변수도 정의되지 않았으므로 주석 처리합니다.
+        let flag = 0;
+        // playerAbility Bigone 활성화 시 공격 카드는 한 턴에 한 장만 사용 가능함
+        if (playerAbility.bigOne === true) {
+
+            if (useCardCurrentTurn.atkCard >= 1 && getCard_storage(hand_arr[selectedCard].index).type == "attack") {
+                flag++;
+
+                draggedCard.style.left = '0px';
+                draggedCard.style.top = '0px';
+
+                const systemNotice = document.getElementById("systemNotice");
+                systemNotice.innerText = "한 턴에 한 장의 공격카드만 사용할 수 있습니다.";
+                systemNotice.style.filter = 'opacity(1)';
+                setTimeout(() => {
+                    systemNotice.style.filter = 'opacity(0)';
+                }, 700);
+            }
+        }
+
+        if (flag == 0) {
+            document.getElementById('hand').appendChild(draggedCard);
+
+            Active_Card(selectedCard); // 이 코드는 정의되지 않았으므로 주석 처리합니다.
+            removeCard();
+            //console.log("카드를 사용했음!");
+            // CUR_CARD = cardInfo.index; // 이 코드와 관련된 변수도 정의되지 않았으므로 주석 처리합니다.
+        }
     }
 
     isDragging = false;
@@ -563,16 +601,16 @@ function EnemySprite(status) {
     }
 
     if (curEnemy === "slime") {
-        switch(status){
-            case "idle" :
+        switch (status) {
+            case "idle":
                 spriteSheet.src = './assets/slime/Idle.png';
                 totalFrames = 8;
                 break;
-            case "attack" :
+            case "attack":
                 spriteSheet.src = './assets/slime/Attack.png';
                 totalFrames = 5;
                 break;
-            case "hurt" :
+            case "hurt":
                 spriteSheet.src = './assets/slime/Hurt.png';
                 totalFrames = 6;
                 break;
@@ -611,13 +649,14 @@ function EnemySprite(status) {
 
 function Active_Card(cardIndex) {
     let card = getCard_storage(hand_arr[cardIndex].index); // 핸드에서 선택한 카드의 정보를 스토리지에서 가져옴
-
     applyMana(card.cost);
 
     // 태그는 `로 구분되어있는 하나의 문자열로 받음
     let tags = card.tag.split('`');
 
     if (card.type === "attack") {
+        useCardCurrentTurn.atkCard++; // 이번턴에 사용한 공격카드 개수 +1
+
         const playerEffect = document.getElementById("playerEffect");
         const enemyPreHp = document.getElementById("enemyPreHP");
         enemyPreHp.style.width = (gameData.enemyHP / gameData.enemyMaxHP) * 100 + '%';
@@ -632,6 +671,9 @@ function Active_Card(cardIndex) {
 
         // 입힐 데미지 계산 => 최종 데미지는 damage로 넣음
         let damage = Math.floor(Atk * damageRate);
+
+        // 데미지가 0 이면 1로 보정..
+        if (damage == 0) damage = 1;
 
         // 공격 횟수 처리
         let repeatCount = 1; // 기본적으로 한 번만 공격
@@ -653,15 +695,26 @@ function Active_Card(cardIndex) {
         let ultimateFlag = false;
         if (card.tag.includes("일격필살"))
             ultimateFlag = true;
-    
+
         let shieldAttackFlag = false;
         // 방패 밀치기 관련 트리거
-        if (card.tag.includes("방어도공격")){
+        if (card.tag.includes("방어도공격")) {
             damage = gameData.playerShield;
             shieldAttackFlag = true;
         }
-        
+
+        // 플레이어 어빌리티 - 크고 화려한 공격
+        // 플레이어 데미지 * 2 / 한 턴에 한 장의 공격카드 사용 제한
+        if (playerAbility.bigOne === true) {
+            damage = damage * 2;
+        }
+
+        // 반복 시 기하급수적인 데미지 상승을 방지한 데미지 기록
+        // 반복 공격시 한번의 데미지를 입힌 후 다시 기록된 데미지에서 부터 계산 시작
         let damageRecord = damage;
+
+        let attackDelay = 300;
+        if (repeatCount > 5) attackDelay = 150;
 
         // 반복해서 공격하기
         for (let i = 0; i < repeatCount; i++) {
@@ -683,7 +736,7 @@ function Active_Card(cardIndex) {
                 damage = damage - gameData.enemyDef;
 
                 // 약점 노출 계산
-                if(enemyWeak > 0){
+                if (enemyWeak > 0) {
                     damage = damage * 1.5;
                 }
 
@@ -701,19 +754,39 @@ function Active_Card(cardIndex) {
                 }
 
                 // 공격 피해량 증가 - ( 큰거한방 )
-                if (attack_DMG_UP){
+                if (attack_DMG_UP) {
                     damage = damage * 2;
                     attack_DMG_UP = false;
 
                     document.getElementById("buff피해량증가").style.filter = 'opacity(0) invert(58%) sepia(3%) saturate(0%) hue-rotate(143deg) brightness(89%) contrast(92%)';
                     refreshCard();
-                    
+
                     setTimeout(() => {
                         document.getElementById("buff피해량증가").remove();
                     }, 300);
                 }
+
+                // 콤보 마스터 - 플레이어 어빌리티 ( 축복 )
+                // 공격 횟수가 반복 될 수록 피해량 n% 증가
+                if (playerAbility.comboMaster === true) {
+
+                    for (let j = 0; j < i; j++) {
+                        if (i != 0) damage = damage * 1.20;
+                    }
+                }
+
+                // 상대가 슬라임이고 제약이 받는 피해 감소 일 때
+                if (gameData.curEnemy === "slime") {
+                    damage = damage * 0.8;
+                }
+
+                if (damage < 0) {
+                    console.log("damage : "+damage);
+                    damage = 0;
+                }
                 // 데미지는 항상 정수이기로 합시다
                 damage = Math.floor(damage);
+                console.log((i + 1) + "번째 공격 데미지 : " + damage);
                 //////////////////////////////////////////////////////////////////
 
                 // 공격 이펙트
@@ -725,67 +798,74 @@ function Active_Card(cardIndex) {
                     playerEffect.style.display = 'none';
                 }, 50);
 
-                // 만약 적에게 방어도가 없으면
-                if (enemyShield <= 0) {
-
-                    // 음향 효과
-                    if (ultimateFlag){
-                        soundEffect("일격필살");
-                    }
-                    else if(shieldAttackFlag){
-                        soundEffect("방패밀치기");
-                    }
-                    else {
-                        if (critFlag)
-                            soundEffect("critical");
-                        else
-                            soundEffect("attack");
-                    }
-                    enemyHP = enemyHP - damage; // 피해 입히기
-                    // 변경된 데이터를 applyHP 함수에 반영
-                    // 피해의 수치를 표시하는 엘리먼트 생성
-                    showDamageNumber(damage, critFlag);
+                if (damage === 0) {
+                    soundEffect("defence");
+                    showDamageNumber(0, critFlag);
                 }
+                else {
+                    // 만약 적에게 방어도가 없으면
+                    if (enemyShield <= 0) {
 
-                // 적에게 방어도가 있다면
-                else if (enemyShield > 0) {
-
-                    enemyShield = enemyShield - damage;
-
-                    if (enemyShield < 0) {
-
-                        enemyHP = enemyHP + enemyShield;
-                        gameData.enemyShield = 0;
-
-                        if(!ultimateFlag && !shieldAttackFlag)
-                            soundEffect("shieldBreak");
-                    }
-                    else {
-                        gameData.enemyShield = enemyShield;
-
-                        if(!ultimateFlag && !shieldAttackFlag)
-                            soundEffect("defence");
-                    }
-
-                    if(ultimateFlag){
-                        soundEffect("일격필살");
-                    }
-                    else if(shieldAttackFlag){
-                        soundEffect("방패밀치기");
+                        // 음향 효과
+                        if (ultimateFlag) {
+                            soundEffect("일격필살");
+                        }
+                        else if (shieldAttackFlag) {
+                            soundEffect("방패밀치기");
+                        }
+                        else {
+                            if (critFlag)
+                                soundEffect("critical");
+                            else
+                                soundEffect("attack");
+                        }
+                        enemyHP = enemyHP - damage; // 피해 입히기
+                        // 변경된 데이터를 applyHP 함수에 반영
+                        // 피해의 수치를 표시하는 엘리먼트 생성
+                        showDamageNumber(damage, critFlag);
                     }
 
-                    // 변경된 데이터를 applyHP 함수에 반영
-                    // 피해의 수치를 표시하는 엘리먼트 생성
-                    showDamageNumber(damage, critFlag);
+                    // 적에게 방어도가 있다면
+                    else if (enemyShield > 0) {
+
+                        enemyShield = enemyShield - damage;
+
+                        if (enemyShield < 0) {
+
+                            enemyHP = enemyHP + enemyShield;
+                            gameData.enemyShield = 0;
+
+                            if (!ultimateFlag && !shieldAttackFlag)
+                                soundEffect("shieldBreak");
+                        }
+                        else {
+                            gameData.enemyShield = enemyShield;
+
+                            if (!ultimateFlag && !shieldAttackFlag)
+                                soundEffect("defence");
+                        }
+
+                        if (ultimateFlag) {
+                            soundEffect("일격필살");
+                        }
+                        else if (shieldAttackFlag) {
+                            soundEffect("방패밀치기");
+                        }
+
+                        // 변경된 데이터를 applyHP 함수에 반영
+                        // 피해의 수치를 표시하는 엘리먼트 생성
+                        showDamageNumber(damage, critFlag);
+                    }
                 }
 
                 gameData.enemyHP = enemyHP;
                 gameData.applyHP(); // applyHP 함수 호출
 
-            }, i * 300); // 각 반복마다 1초씩 딜레이를 줌 (1000ms = 1초)
+            }, i * attackDelay); // 각 반복마다 1초씩 딜레이를 줌 (1000ms = 1초)
         }
     }
     else if (card.type === "defence") {
+        useCardCurrentTurn.defCard++; // 이번턴에 사용한 방어카드 개수 +1
 
         tags.forEach(tag => {
             if (tag.includes("방어도획득")) {
@@ -818,9 +898,19 @@ function Active_Card(cardIndex) {
                 }
                 */
             }
+
+            if(tag.includes("마나획득")){
+                let Match = tag.match(/마나획득(\d+)/);
+                if (Match) {
+                    let Amount = parseInt(Match[1]);
+                    //console.log(Amount+"만큼 마나추가");
+                    applyMana(Amount*(-1));    
+                }
+            }
         })
     }
     else if (card.type === "spell") {
+        useCardCurrentTurn.spellCard++; // 이번턴에 사용한 스펠카드 개수 +1
 
         tags.forEach(tag => {
             soundEffect("addBuff");
@@ -847,7 +937,7 @@ function Active_Card(cardIndex) {
                     }
                 }
             }
-            else{
+            else {
                 if (tag.includes("불굴의의지")) {
                     //console.log("check");
                     overcomeBuff = true;
@@ -865,7 +955,9 @@ function Active_Card(cardIndex) {
             }
         })
     }
-    else if(card.type === "magic"){
+    else if (card.type === "magic") {
+        useCardCurrentTurn.magicCard++; // 이번턴에 사용한 마법카드 개수 +1
+
         tags.forEach(tag => {
             if (tag.includes("공격피해량증가")) {
 
@@ -875,9 +967,9 @@ function Active_Card(cardIndex) {
 
                 setTimeout(() => {
                     document.getElementById("buff피해량증가").style.filter = 'opacity(1) invert(58%) sepia(3%) saturate(0%) hue-rotate(143deg) brightness(89%) contrast(92%)';
-                    playerBuffIndex ++;
+                    playerBuffIndex++;
                 }, 20);
-                
+
                 attack_DMG_UP = true;   // 실제 피해량 증가 코드
                 refreshCard();
             }
@@ -892,22 +984,30 @@ function Active_Card(cardIndex) {
     tags.forEach(tag => {
         setTimeout(() => {
             if (tag.includes("약점노출")) {
-            
-                let buffWrap = document.getElementById("enemyBuffWrap");
-                buffWrap.innerHTML += "<img class='buff' id='buff"+EnemyBuffIndex+"' src=./assets/icon/약점.png>";
-    
-                setTimeout(() => {
-                    document.getElementById("buff"+EnemyBuffIndex).style.filter = 'opacity(1) invert(58%) sepia(3%) saturate(0%) hue-rotate(143deg) brightness(89%) contrast(92%)';
-                    EnemyBuffIndex ++;
-                }, 20);
-    
-                enemyWeak = 2;
+
+                if (!enemyWeak) {
+                    let buffWrap = document.getElementById("enemyBuffWrap");
+                    buffWrap.innerHTML += "<span style=color:gray id='buff약점증가'><img class='buff' id='buff약점증가img' src=./assets/icon/약점.png>" + enemyWeak + "</span>";
+                    EnemyBuffIndex++;
+                }
+
+                enemyWeak = enemyWeak + 2;
                 refreshCard();
+                refreshBuff();
             }
         }, 100);
     });
 }
+const refreshBuff = () => {
 
+    document.getElementById("buff약점증가").innerHTML = "<img class='buff' id='buff약점증가img' src=./assets/icon/약점.png>" + enemyWeak;
+
+    if (enemyWeak > 0) {
+        setTimeout(() => {
+            document.getElementById("buff약점증가img").style.filter = 'opacity(1) invert(58%) sepia(3%) saturate(0%) hue-rotate(143deg) brightness(89%) contrast(92%)';
+        }, 20);
+    }
+}
 function applyStat(target, option, val) {
 
     if (target === "player") {
@@ -996,8 +1096,9 @@ function applyMana(useCost) {
     }
     // 코스트 추가 적용
     else {
-        mana = mana + useCost;
+        mana = mana + Math.abs(useCost);
 
+        console.log(Math.abs(useCost)+"만큼 마나 추가");
         for (let i = 1; i <= 5; i++) {
             document.getElementById("mana" + i).style.backgroundColor = 'aquamarine';
         }
@@ -1041,10 +1142,10 @@ function soundEffect(trigger) {
     else if (trigger === "critical") {
         effectSound.src = "./assets/sound/critical.mp3";
     }
-    else if(trigger==="magic"){
+    else if (trigger === "magic") {
         effectSound.src = "./assets/sound/magic.mp3";
-    } 
-    else if(trigger==="일격필살"){
+    }
+    else if (trigger === "일격필살") {
         effectSound.src = "./assets/sound/일필1.mp3";
         effectSound.play();
 
@@ -1058,7 +1159,7 @@ function soundEffect(trigger) {
             }, 1300);
         }, 1000);
     }
-    else if(trigger==="방패밀치기"){
+    else if (trigger === "방패밀치기") {
         effectSound.src = "./assets/sound/shieldAttack.mp3";
     }
 
@@ -1093,10 +1194,10 @@ function showDamageNumber(damage, critFlag) {
 
     let container;
     // 적절한 위치에 추가
-    if(isMyTurn){    // 내 턴일 때 적에게 데미지 표기
+    if (isMyTurn) {    // 내 턴일 때 적에게 데미지 표기
         container = document.querySelector('#enemy'); // 게임 컨테이너의 클래스명
     }
-    else{   // 적 턴 일때 나에게 데미지 표기
+    else {   // 적 턴 일때 나에게 데미지 표기
         container = document.querySelector('#player');
     }
     container.appendChild(damageText);
@@ -1112,6 +1213,22 @@ function showDamageNumber(damage, critFlag) {
         clearInterval(damageFontEffect);
         damageText.remove();
     }, 1500); // 1초 후에 제거 (1000ms = 1초)
+}
+
+const resetUseCard = () => {
+    useCardCurrentTurn.atkCard = 0;
+    useCardCurrentTurn.defCard = 0;
+    useCardCurrentTurn.magicCard = 0;
+    useCardCurrentTurn.spellCard = 0;
+}
+const getUseCardCurrentTurn = () => {
+    let result = 0;
+    result = result + useCardCurrentTurn.atkCard;
+    result = result + useCardCurrentTurn.defCard;
+    result = result + useCardCurrentTurn.magicCard;
+    result = result + useCardCurrentTurn.spellCard;
+
+    return result;
 }
 
 function getCard_storage(index) {
@@ -1137,7 +1254,7 @@ function getCard_storage(index) {
     switch (index) {
         case 0:
             card.name = "타격",
-            card.index = index;
+                card.index = index;
             card.type = "attack";
             card.tag = "";
             card.cost = 1;
@@ -1163,7 +1280,7 @@ function getCard_storage(index) {
             card.cost = 3;
             card.atk = 3;
             card.def = 3;
-            card.info = "내 생명력이 n%보다 많다면 적의 공격을 방어합니다. 다음 사용하는 패링의 요구 체력 조건이 n%만큼 증가합니다.";
+            card.info = "내 생명력이 40%보다 많다면 적의 다음 공격을 방어합니다. 다음 사용하는 패링의 요구 체력 조건이 n%만큼 증가합니다.";
             break;
         case 3:
             card.name = "응수";
@@ -1189,7 +1306,7 @@ function getCard_storage(index) {
             card.name = "명상";
             card.index = index;
             card.type = "spell";
-            card.tag = "공격력증가50";
+            card.tag = "공격력증가10";
             card.cost = 2;
             card.atk = 1;
             card.def = 3;
@@ -1259,11 +1376,11 @@ function getCard_storage(index) {
             card.name = "방패 들기";
             card.index = index;
             card.type = "defence";
-            card.tag = "방어도획득5";
-            card.cost = 2;
+            card.tag = "방어도획득10";
+            card.cost = 1;
             card.atk = 1;
             card.def = 5;
-            card.info = "방어도를 5만큼 획득합니다.";
+            card.info = "방어도를 5 획득합니다.";
             break;
         case 13:
             card.name = "피의 맛";
@@ -1356,14 +1473,14 @@ function getCard_storage(index) {
             card.info = "적에게 공격력의 55%만큼의 피해를 3번 입힙니다.";
             break;
         case 22:
-            card.name = "추가 공격";
+            card.name = "끝없는 공세";
             card.index = index;
             card.type = "spell";
             card.tag = "";
             card.cost = 0;
             card.atk = 0;
             card.def = 0;
-            card.info = "라운드 종료시 해당 턴에 적을 공격한 횟수가 n번 이상이면 적에게 n만큼의 피해를 입힙니다.";
+            card.info = "한 턴에 적에게 3번 이상의 공격을 하면 그 턴 동안 다음 모든 공격의 피해량이 두 배 증가합니다";
             break;
         case 23:
             card.name = "불굴의 의지";
@@ -1395,6 +1512,26 @@ function getCard_storage(index) {
             card.def = 0;
             card.info = "적에게 존재하는 출혈에 X2를 적용시킵니다.";
             break;
+        case 26:
+            card.name = "칼날폭풍";
+            card.index = index;
+            card.type = "attack";
+            card.tag = "15회공격";
+            card.cost = 3;
+            card.atk = 8;
+            card.def = 0;
+            card.info = "적에게 공격력의 8%의 피해를 15번 입힙니다.";
+            break;
+        case 27:
+            card.name = "재정비"
+            card.index = index;
+            card.type = "defence";
+            card.tag = "방어도획득3`마나획득1";
+            card.cost = 0;
+            card.atk = 0;
+            card.def = 0;
+            card.info = "방어도를 3 얻습니다. 마나를 1 회복합니다";
+            break;
         default:
             card.index = -1;
             break;
@@ -1413,11 +1550,24 @@ function CHECK_TOTAL_CARD_INDEX() {
     }
     console.log("총 " + TOTAL_CARD_INDEX + "개의 카드를 불러오는데 성공함!");
 
-    // 임시적인 덱 구성
-    for (let i = 0; i < TOTAL_CARD_INDEX; i++) {
-        deck.push(getCard_storage(i));
+    let flag = 1;
+
+    if (flag == 0) {
+        // 임시적인 덱 구성
+        for (let i = 0; i < TOTAL_CARD_INDEX; i++) {
+            deck.push(getCard_storage(i));
+        }
     }
-    LEFT_CARD_INDEX = TOTAL_CARD_INDEX;
+    // 임시적인 커스텀 덱 구성
+    else if (flag == 1) {
+
+        deck.push(getCard_storage(27));
+        deck.push(getCard_storage(26));
+        deck.push(getCard_storage(1));
+        deck.push(getCard_storage(4));
+    }
+
+    LEFT_CARD_INDEX = flag = 0 ? TOTAL_CARD_INDEX : deck.length;
 }
 CHECK_TOTAL_CARD_INDEX();
 gameController();
