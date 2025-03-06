@@ -11,4 +11,4 @@ Nodejs를 익히고 모듈화 시켜서 좀 더 깔끔하게 제작하고 싶음
 
 <h2>미리보기</h2>
 
-![image](https://github.com/user-attachments/assets/d67dbfde-5a68-4261-b0b6-e3b1ab9178bc)
+![제목 없는 동영상 - Clipchamp로 제작](https://github.com/user-attachments/assets/47b856e6-6aa2-42ac-8294-2f08633d861c)
