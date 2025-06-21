@@ -196,6 +196,20 @@ window.addEventListener('keydown', (e) => {
     }
 
     drawBoard();
+
+    if (targetValue === 2) {
+        const isClear = goalPositions.every(goal =>
+            targetGroup.some(block =>
+                block.row === goal.row && block.col === goal.col
+            )
+        );
+
+        if (isClear) {
+            setTimeout(() => {
+                alert("🎉 클리어!");
+            }, 100); // drawBoard 이후 alert 딜레이
+        }
+    }
 });
 
 canvas.addEventListener('mousemove', (e) => {
