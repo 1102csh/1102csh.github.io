@@ -37,7 +37,7 @@ const blockColors = {
     6: '#A66CFF',
     7: '#FFA07A',
     8: '#F39C12',
-    10: '#fff0f5',
+    10: '#ffc0cb',
     11: '#FF8C00',
     12: '#20B2AA',
     13: '#DA70D6'
