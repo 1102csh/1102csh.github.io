@@ -37,7 +37,7 @@ const blockColors = {
     6: '#A66CFF',
     7: '#FFA07A',
     8: '#F39C12',
-    10: '#3EDBF0',
+    10: '#555555',
     11: '#FF8C00',
     12: '#20B2AA',
     13: '#DA70D6'
@@ -299,7 +299,11 @@ canvas.addEventListener('mousemove', (e) => {
     const row = Math.floor(mouseY / cellHeight);
 
     // if (board[row][col] >= 2 && board[row][col] <= 8) || (board[row][col] > 9)
-    if (blockColors[board[row][col]]) {
+    if (
+        row >= 0 && row < rows &&
+        col >= 0 && col < cols &&
+        blockColors[board[row][col]]
+    ) {
         canvas.style.cursor = 'pointer';
     } else {
         canvas.style.cursor = 'default';
