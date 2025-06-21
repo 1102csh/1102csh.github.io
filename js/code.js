@@ -36,7 +36,11 @@ const blockColors = {
     5: '#6BCB77',
     6: '#A66CFF',
     7: '#FFA07A',
-    8: '#F39C12'
+    8: '#F39C12',
+    10: '#3EDBF0',
+    11: '#FF8C00',
+    12: '#20B2AA',
+    13: '#DA70D6'
 };
 
 // 🔢 스테이지 목록
@@ -76,6 +80,14 @@ const stages = [
             [1, 0, 8, 7, 6, 0, 1],
             [1, 1, 9, 9, 1, 1, 1],
             [1, 1, 9, 9, 1, 1, 1]
+        ]
+    },
+    {
+        board: [
+            [3, 3, 5, 10, 12],
+            [2, 2, 6, 10, 9],
+            [2, 2, 7, 11, 9],
+            [4, 4, 8, 11, 13]
         ]
     }
 ];
@@ -201,8 +213,8 @@ function drawBoard() {
                 ctx.strokeStyle = '#444';
                 ctx.strokeRect(x, y, cellWidth, cellHeight);
                 ctx.strokeStyle = '#ccc';
-            } else if (value >= 2 && value <= 8) {
-                ctx.fillStyle = blockColors[value] || '#999';
+            } else if (blockColors[value]) {
+                ctx.fillStyle = blockColors[value];
                 ctx.fillRect(
                     x + margin,
                     y + margin,
@@ -210,6 +222,7 @@ function drawBoard() {
                     cellHeight - margin * 2
                 );
 
+                // 선택된 블럭 강조
                 if (targetGroup && targetGroup.some(p => p.row === row && p.col === col)) {
                     ctx.strokeStyle = '#000';
                     ctx.lineWidth = 2;
@@ -268,7 +281,8 @@ canvas.addEventListener('click', (e) => {
     const row = Math.floor(mouseY / cellHeight);
     const value = board[row][col];
 
-    if (value >= 2 && value <= 8) {
+    // if (value >= 2 && value <= 8)
+    if (blockColors[value]) {
         targetGroup = findConnectedGroup(row, col, value);
         targetValue = value;
         drawBoard();
@@ -284,11 +298,8 @@ canvas.addEventListener('mousemove', (e) => {
     const col = Math.floor(mouseX / cellWidth);
     const row = Math.floor(mouseY / cellHeight);
 
-    if (
-        row >= 0 && row < rows &&
-        col >= 0 && col < cols &&
-        board[row][col] >= 2 && board[row][col] <= 8
-    ) {
+    // if (board[row][col] >= 2 && board[row][col] <= 8) || (board[row][col] > 9)
+    if (blockColors[board[row][col]]) {
         canvas.style.cursor = 'pointer';
     } else {
         canvas.style.cursor = 'default';
