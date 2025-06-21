@@ -14,7 +14,7 @@ canvas {
 }
 
 .utilWrap {
-    width: 32%;
+    width: 360px;
     display: flex;
     flex-direction: row;
     position: relative;
