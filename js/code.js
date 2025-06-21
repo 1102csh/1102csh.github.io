@@ -174,6 +174,7 @@ function loadStage(index) {
     cellWidth = canvas.width / cols;
     cellHeight = canvas.height / rows;
     document.getElementById("utilWrap").style.width = canvas.width + 'px';
+    document.getElementById("resetWrap").style.width = canvas.width + 'px';
 
     // 도착지 찾기
     goalPositions = [];
@@ -378,6 +379,8 @@ window.addEventListener('keydown', (e) => {
 
         if (isClear) {
             saveClearedStage(currentStageIndex); // ← 클리어 기록 저장
+            createStageButtons();  // ← 클리어 직후 버튼 다시 생성해서 왕관 반영
+
             setTimeout(() => {
                 alert("🎉 클리어!");
                 if (currentStageIndex + 1 < stages.length) {
@@ -391,7 +394,7 @@ window.addEventListener('keydown', (e) => {
 });
 
 // 다시 시작
-document.getElementById('resetBtn').addEventListener('click', () => {
+document.getElementById('resetWrap').addEventListener('click', () => {
     loadStage(currentStageIndex);
 });
 
