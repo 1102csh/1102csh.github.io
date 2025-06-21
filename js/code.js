@@ -1,34 +1,31 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-
-const rows = 8;
-const cols = 6;
-const cellWidth = canvas.width / cols;
-const cellHeight = canvas.height / rows;
 const scoreText = document.getElementById("score");
+
+let board = [];
+let goalPositions = [];
 let score = 0;
+let currentStageIndex = 0;
+let rows = 0;
+let cols = 0;
+let cellWidth = 0;
+let cellHeight = 0;
 
-const initialBoard = [
-    [1, 1, 2, 2, 1, 1],
-    [1, 1, 2, 2, 1, 1],
-    [0, 0, 0, 0, 0, 0],
-    [0, 3, 3, 5, 5, 0],
-    [1, 4, 3, 5, 6, 1],
-    [1, 4, 4, 6, 6, 1],
-    [1, 1, 7, 7, 1, 1],
-    [1, 1, 9, 9, 1, 1]
-];
+// 저장 키명
+const CLEAR_STORAGE_KEY = 'clearedStages';
 
-// 현재 보드 상태 (깊은 복사)
-let board = JSON.parse(JSON.stringify(initialBoard));
+// 클리어된 스테이지 목록 불러오기
+function getClearedStages() {
+    const raw = localStorage.getItem(CLEAR_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+}
 
-// 도착지 위치 저장
-const goalPositions = [];
-for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-        if (initialBoard[r][c] === 9) {
-            goalPositions.push({ row: r, col: c });
-        }
+// 스테이지 클리어 기록 저장
+function saveClearedStage(index) {
+    const cleared = getClearedStages();
+    if (!cleared.includes(index)) {
+        cleared.push(index);
+        localStorage.setItem(CLEAR_STORAGE_KEY, JSON.stringify(cleared));
     }
 }
 
@@ -39,65 +36,146 @@ const blockColors = {
     5: '#6BCB77',
     6: '#A66CFF',
     7: '#FFA07A',
+    8: '#F39C12'
 };
 
-function findConnectedGroup(row, col, value, visited = {}) {
-    const stack = [[row, col]];
-    const group = [];
-    const key = (r, c) => `${r},${c}`;
-    visited[key(row, col)] = true;
+// 🔢 스테이지 목록
+const stages = [
+    {
+        board: [
+            [1, 1, 2, 2, 1, 1],
+            [1, 1, 2, 2, 1, 1],
+            [0, 0, 0, 0, 0, 0],
+            [0, 3, 3, 5, 5, 0],
+            [1, 4, 3, 5, 6, 1],
+            [1, 4, 4, 6, 6, 1],
+            [1, 1, 7, 7, 1, 1],
+            [1, 1, 9, 9, 1, 1]
+        ]
+    },
+    {
+        board: [
+            [1, 1, 2, 2, 1, 1, 1],
+            [1, 1, 2, 2, 1, 1, 1],
+            [1, 0, 3, 0, 4, 0, 1],
+            [0, 3, 3, 3, 4, 4, 1],
+            [0, 0, 3, 1, 5, 5, 0],
+            [0, 8, 8, 7, 6, 6, 1],
+            [1, 0, 8, 7, 6, 0, 1],
+            [1, 1, 9, 9, 1, 1, 1],
+            [1, 1, 9, 9, 1, 1, 1]
+        ]
+    },
+    {
+        board: [
+            [2, 2, 1, 1, 1, 1],
+            [2, 2, 1, 1, 1, 1],
+            [3, 3, 4, 4, 0, 0],
+            [3, 3, 4, 4, 1, 1],
+            [5, 5, 6, 6, 1, 1],
+            [7, 7, 8, 8, 1, 1],
+            [1, 1, 9, 9, 1, 1],
+            [1, 1, 9, 9, 1, 1]
+        ]
+    }
+];
 
-    while (stack.length > 0) {
-        const [r, c] = stack.pop();
-        group.push({ row: r, col: c });
+const stageButtonsEl = document.getElementById("stageButtons");
+const stageSelectorEl = document.getElementById("stageSelector");
+const toggleStageBtn = document.getElementById("toggleStageBtn");
 
-        const directions = [
-            [0, 1], [1, 0], [0, -1], [-1, 0]
-        ];
+// 버튼 생성
+function createStageButtons() {
+    stageButtonsEl.innerHTML = "";
+    stages.forEach((_, index) => {
+        const btn = document.createElement("button");
+        btn.textContent = index + 1;
+        btn.classList.toggle("active", index === currentStageIndex);
+        btn.addEventListener("click", () => {
+            currentStageIndex = index;
+            loadStage(currentStageIndex);
+            updateStageButtons();
+        });
+        stageButtonsEl.appendChild(btn);
+    });
+}
 
-        for (const [dy, dx] of directions) {
-            const nr = r + dy;
-            const nc = c + dx;
+function updateStageButtons() {
+    Array.from(stageButtonsEl.children).forEach((btn, index) => {
+        btn.classList.toggle("active", index === currentStageIndex);
+    });
+}
 
-            if (
-                nr >= 0 && nr < rows &&
-                nc >= 0 && nc < cols &&
-                !visited[key(nr, nc)] &&
-                board[nr][nc] === value
-            ) {
-                visited[key(nr, nc)] = true;
-                stack.push([nr, nc]);
+// 축소/확대 토글
+toggleStageBtn.addEventListener("click", () => {
+    stageSelectorEl.classList.toggle("collapsed");
+    toggleStageBtn.textContent = stageSelectorEl.classList.contains("collapsed") ? "▲" : "▼";
+});
+
+function createStageButtons() {
+    stageButtonsEl.innerHTML = "";
+    const clearedStages = getClearedStages();
+
+    stages.forEach((_, index) => {
+        const btn = document.createElement("button");
+        btn.textContent = index + 1;
+
+        if (clearedStages.includes(index)) {
+            btn.textContent += " 👑"; // 왕관 추가
+        }
+
+        btn.classList.toggle("active", index === currentStageIndex);
+        btn.addEventListener("click", () => {
+            currentStageIndex = index;
+            loadStage(currentStageIndex);
+            updateStageButtons();
+        });
+
+        stageButtonsEl.appendChild(btn);
+    });
+}
+
+// 선택된 블럭 상태
+let targetGroup = null;
+let targetValue = null;
+
+// 스테이지 불러오기
+function loadStage(index) {
+    const stage = stages[index];
+    board = JSON.parse(JSON.stringify(stage.board));
+    rows = board.length;
+    cols = board[0].length;
+
+    // 캔버스 크기 및 셀 크기 설정
+    canvas.width = cols * 60;
+    canvas.height = rows * 60;
+    cellWidth = canvas.width / cols;
+    cellHeight = canvas.height / rows;
+    document.getElementById("utilWrap").style.width = canvas.width + 'px';
+
+    // 도착지 찾기
+    goalPositions = [];
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            if (board[r][c] === 9) {
+                goalPositions.push({ row: r, col: c });
             }
         }
     }
 
-    return group;
+    targetGroup = null;
+    targetValue = null;
+    score = 0;
+    scoreText.innerText = 0;
+    drawBoard();
 }
 
-let targetGroup = null;
-let targetValue = null;
-
-canvas.addEventListener('click', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    const col = Math.floor(mouseX / cellWidth);
-    const row = Math.floor(mouseY / cellHeight);
-    const value = board[row][col];
-
-    if (value >= 2 && value <= 7) {
-        targetGroup = findConnectedGroup(row, col, value);
-        targetValue = value;
-        drawBoard();
-    }
-});
-
+// 보드 그리기
 function drawBoard() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     const margin = 4;
 
-    // 도착지 먼저 그리기 (배경)
+    // 도착지 그리기
     for (const { row, col } of goalPositions) {
         const x = col * cellWidth;
         const y = row * cellHeight;
@@ -117,15 +195,13 @@ function drawBoard() {
             ctx.strokeRect(x, y, cellWidth, cellHeight);
 
             if (value === 1) {
-                // 벽
                 ctx.fillStyle = '#444';
                 ctx.fillRect(x, y, cellWidth, cellHeight);
                 ctx.lineWidth = 2;
                 ctx.strokeStyle = '#444';
                 ctx.strokeRect(x, y, cellWidth, cellHeight);
                 ctx.strokeStyle = '#ccc';
-            } else if (value >= 2 && value <= 7) {
-                // 블럭
+            } else if (value >= 2 && value <= 8) {
                 ctx.fillStyle = blockColors[value] || '#999';
                 ctx.fillRect(
                     x + margin,
@@ -151,6 +227,75 @@ function drawBoard() {
     scoreText.innerText = score;
 }
 
+// 연결된 블럭 찾기
+function findConnectedGroup(row, col, value, visited = {}) {
+    const stack = [[row, col]];
+    const group = [];
+    const key = (r, c) => `${r},${c}`;
+    visited[key(row, col)] = true;
+
+    while (stack.length > 0) {
+        const [r, c] = stack.pop();
+        group.push({ row: r, col: c });
+
+        const directions = [[0, 1], [1, 0], [0, -1], [-1, 0]];
+        for (const [dy, dx] of directions) {
+            const nr = r + dy;
+            const nc = c + dx;
+
+            if (
+                nr >= 0 && nr < rows &&
+                nc >= 0 && nc < cols &&
+                !visited[key(nr, nc)] &&
+                board[nr][nc] === value
+            ) {
+                visited[key(nr, nc)] = true;
+                stack.push([nr, nc]);
+            }
+        }
+    }
+
+    return group;
+}
+
+// 블럭 클릭
+canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const col = Math.floor(mouseX / cellWidth);
+    const row = Math.floor(mouseY / cellHeight);
+    const value = board[row][col];
+
+    if (value >= 2 && value <= 8) {
+        targetGroup = findConnectedGroup(row, col, value);
+        targetValue = value;
+        drawBoard();
+    }
+});
+
+// 커서 포인터 처리
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const col = Math.floor(mouseX / cellWidth);
+    const row = Math.floor(mouseY / cellHeight);
+
+    if (
+        row >= 0 && row < rows &&
+        col >= 0 && col < cols &&
+        board[row][col] >= 2 && board[row][col] <= 8
+    ) {
+        canvas.style.cursor = 'pointer';
+    } else {
+        canvas.style.cursor = 'default';
+    }
+});
+
+// 방향키로 이동
 window.addEventListener('keydown', (e) => {
     if (!targetGroup || !targetValue) return;
 
@@ -181,7 +326,8 @@ window.addEventListener('keydown', (e) => {
 
     if (!canMove) return;
 
-    score = score + 1;
+    score += 1;
+
     const isGoal = (r, c) =>
         goalPositions.some(p => p.row === r && p.col === c);
 
@@ -197,6 +343,7 @@ window.addEventListener('keydown', (e) => {
 
     drawBoard();
 
+    // 클리어 조건 확인
     if (targetValue === 2) {
         const isClear = goalPositions.every(goal =>
             targetGroup.some(block =>
@@ -205,39 +352,26 @@ window.addEventListener('keydown', (e) => {
         );
 
         if (isClear) {
+            saveClearedStage(currentStageIndex); // ← 클리어 기록 저장
             setTimeout(() => {
                 alert("🎉 클리어!");
-            }, 100); // drawBoard 이후 alert 딜레이
+                if (currentStageIndex + 1 < stages.length) {
+                    currentStageIndex++;
+                    loadStage(currentStageIndex);
+                    updateStageButtons(); // ← 버튼도 업데이트
+                }
+            }, 100);
         }
     }
 });
 
-canvas.addEventListener('mousemove', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    const col = Math.floor(mouseX / cellWidth);
-    const row = Math.floor(mouseY / cellHeight);
-
-    if (
-        row >= 0 && row < rows &&
-        col >= 0 && col < cols &&
-        board[row][col] >= 2 && board[row][col] <= 7
-    ) {
-        canvas.style.cursor = 'pointer';
-    } else {
-        canvas.style.cursor = 'default';
-    }
-});
-
+// 다시 시작
 document.getElementById('resetBtn').addEventListener('click', () => {
-    board = JSON.parse(JSON.stringify(initialBoard));
-    targetGroup = null;
-    targetValue = null;
-    score = 0;
-    scoreText.innerText = 0;
-    drawBoard();
+    loadStage(currentStageIndex);
 });
 
-drawBoard();
+createStageButtons();
+updateStageButtons();
+
+// 시작
+loadStage(currentStageIndex);
