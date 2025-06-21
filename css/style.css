@@ -1,56 +1,63 @@
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background: #696969;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background: #696969;
 
-    flex-direction: column;
-    user-select: none;
+  flex-direction: column;
+  user-select: none;
 }
+
 canvas {
-    background: white;
-    border: 2px solid #333;
+  background: white;
+  border: 2px solid #333;
 }
 
 #utilWrap {
-    width: 360px;
-    display: flex;
-    flex-direction: row;
-    position: relative;
-    justify-content: space-between;
+  width: 360px;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  justify-content: space-between;
 }
+
 .score {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 
-    font-size: 20px;
-    margin-bottom: 15px;
-    color: white;
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: white;
 }
+
 #help {
-    width: 25px;
-    height: 25px;
+  width: 25px;
+  height: 25px;
 
-    padding-top: 5px;
-    cursor: pointer;
-    filter: invert(99%) sepia(65%) saturate(2%) hue-rotate(66deg) brightness(107%) contrast(100%);
+  padding-top: 5px;
+  cursor: pointer;
+  filter: invert(99%) sepia(65%) saturate(2%) hue-rotate(66deg) brightness(107%) contrast(100%);
 }
-#resetBtn{
-    border: 2px solid white;
-    color: white;
-    border-radius: 3px;
-    margin-top: 20px;
-    font-size: 35px;
 
-    transition: all ease 0.1s;
-    padding: 10px;
-    cursor: pointer;
+#resetWrap { 
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  transition: all ease 0.1s;
+  cursor: pointer;
 }
-#resetBtn:hover{
-    background-color: white;
-    color: black;
+#resetBtn {
+  width: 30px;
+  height: 30px;
+  padding: 10px;
+  filter: invert(99%) sepia(65%) saturate(2%) hue-rotate(66deg) brightness(107%) contrast(100%);
+}
+
+#resetWrap:hover {
+  filter: invert(0%) sepia(47%) saturate(11%) hue-rotate(78deg) brightness(89%) contrast(100%);
+  background-color: #333;
 }
 
 .modal-overlay {
@@ -59,7 +66,7 @@ canvas {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,7 +109,7 @@ canvas {
   border: 1px solid #aaa;
   border-radius: 6px;
   padding: 8px;
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
   z-index: 10;
 
 }
