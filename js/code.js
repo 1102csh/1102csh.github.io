@@ -43,6 +43,18 @@ const blockColors = {
 const stages = [
     {
         board: [
+            [2, 2, 1, 1, 1, 1],
+            [2, 2, 1, 1, 1, 1],
+            [3, 3, 4, 4, 0, 0],
+            [3, 3, 4, 4, 1, 1],
+            [5, 5, 6, 6, 1, 1],
+            [7, 7, 8, 8, 1, 1],
+            [1, 1, 9, 9, 1, 1],
+            [1, 1, 9, 9, 1, 1]
+        ]
+    },
+    {
+        board: [
             [1, 1, 2, 2, 1, 1],
             [1, 1, 2, 2, 1, 1],
             [0, 0, 0, 0, 0, 0],
@@ -64,18 +76,6 @@ const stages = [
             [1, 0, 8, 7, 6, 0, 1],
             [1, 1, 9, 9, 1, 1, 1],
             [1, 1, 9, 9, 1, 1, 1]
-        ]
-    },
-    {
-        board: [
-            [2, 2, 1, 1, 1, 1],
-            [2, 2, 1, 1, 1, 1],
-            [3, 3, 4, 4, 0, 0],
-            [3, 3, 4, 4, 1, 1],
-            [5, 5, 6, 6, 1, 1],
-            [7, 7, 8, 8, 1, 1],
-            [1, 1, 9, 9, 1, 1],
-            [1, 1, 9, 9, 1, 1]
         ]
     }
 ];
@@ -300,10 +300,10 @@ window.addEventListener('keydown', (e) => {
     if (!targetGroup || !targetValue) return;
 
     let dx = 0, dy = 0;
-    if (e.key === 'ArrowUp') dy = -1;
-    else if (e.key === 'ArrowDown') dy = 1;
-    else if (e.key === 'ArrowLeft') dx = -1;
-    else if (e.key === 'ArrowRight') dx = 1;
+    if (e.key === 'ArrowUp' || e.key === 'w') dy = -1;
+    else if (e.key === 'ArrowDown' || e.key === 's') dy = 1;
+    else if (e.key === 'ArrowLeft' || e.key === 'a') dx = -1;
+    else if (e.key === 'ArrowRight' || e.key === 'd') dx = 1;
     else return;
 
     const key = (r, c) => `${r},${c}`;
