@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link href="./css/style.css" rel="stylesheet">
 </head>
 
@@ -26,6 +27,15 @@
             <button class="modal-close">&times;</button>
             <h2>플레이 방법</h2>
             <p>블럭을 클릭하고 방향키로 이동하세요.<br>파란색 블럭이 가장 아래 연두색에 도달하면 성공입니다!</p>
+        </div>
+    </div>
+
+    <div id="controls" class="mobile-only">
+        <button onclick="move('up')">↑</button>
+        <div>
+            <button onclick="move('left')">←</button>
+            <button onclick="move('down')">↓</button>
+            <button onclick="move('right')">→</button>
         </div>
     </div>
 
