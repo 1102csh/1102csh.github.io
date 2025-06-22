@@ -393,6 +393,31 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
+// 모바일 환경 ///////////////////////////////////////////////////////////////
+function isMobileDevice() {
+    return /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent);
+}
+
+window.addEventListener('load', () => {
+    if (isMobileDevice()) {
+        document.getElementById('controls').style.display = 'block';
+    }
+});
+
+function resizeCanvas() {
+    const scale = Math.min(window.innerWidth / (cols * 60), 1);
+    canvas.style.transform = `scale(${scale})`;
+    canvas.style.transformOrigin = 'top left';
+}
+window.addEventListener('resize', resizeCanvas);
+
+function move(dir) {
+    const keyMap = { up: 'w', down: 's', left: 'a', right: 'd' };
+    const key = keyMap[dir];
+    window.dispatchEvent(new KeyboardEvent('keydown', { key }));
+}
+/////////////////////////////////////////////////////////////////////////////
+
 // 다시 시작
 document.getElementById('resetWrap').addEventListener('click', () => {
     loadStage(currentStageIndex);
