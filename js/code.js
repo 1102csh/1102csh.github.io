@@ -29,6 +29,31 @@ function saveClearedStage(index) {
     }
 }
 
+// 모바일 환경 ///////////////////////////////////////////////////////////////
+function isMobileDevice() {
+    return /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent);
+}
+
+window.addEventListener('load', () => {
+    if (isMobileDevice()) {
+        document.getElementById('controls').style.display = 'block';
+    }
+});
+
+function resizeCanvas() {
+    const scale = Math.min(window.innerWidth / (cols * 60), 1);
+    canvas.style.transform = `scale(${scale})`;
+    canvas.style.transformOrigin = 'top left';
+}
+window.addEventListener('resize', resizeCanvas);
+
+function move(dir) {
+    const keyMap = { up: 'w', down: 's', left: 'a', right: 'd' };
+    const key = keyMap[dir];
+    window.dispatchEvent(new KeyboardEvent('keydown', { key }));
+}
+/////////////////////////////////////////////////////////////////////////////
+
 const blockColors = {
     2: '#00C2FF',
     3: '#FF6B6B',
@@ -168,9 +193,11 @@ function loadStage(index) {
     rows = board.length;
     cols = board[0].length;
 
+    const baseSize = isMobile() ? 40 : 60;  // 모바일이면 셀 크기를 줄임
+
     // 캔버스 크기 및 셀 크기 설정
-    canvas.width = cols * 60;
-    canvas.height = rows * 60;
+    canvas.width = cols * baseSize;
+    canvas.height = rows * baseSize;
     cellWidth = canvas.width / cols;
     cellHeight = canvas.height / rows;
     document.getElementById("utilWrap").style.width = canvas.width + 'px';
@@ -392,31 +419,6 @@ window.addEventListener('keydown', (e) => {
         }
     }
 });
-
-// 모바일 환경 ///////////////////////////////////////////////////////////////
-function isMobileDevice() {
-    return /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent);
-}
-
-window.addEventListener('load', () => {
-    if (isMobileDevice()) {
-        document.getElementById('controls').style.display = 'block';
-    }
-});
-
-function resizeCanvas() {
-    const scale = Math.min(window.innerWidth / (cols * 60), 1);
-    canvas.style.transform = `scale(${scale})`;
-    canvas.style.transformOrigin = 'top left';
-}
-window.addEventListener('resize', resizeCanvas);
-
-function move(dir) {
-    const keyMap = { up: 'w', down: 's', left: 'a', right: 'd' };
-    const key = keyMap[dir];
-    window.dispatchEvent(new KeyboardEvent('keydown', { key }));
-}
-/////////////////////////////////////////////////////////////////////////////
 
 // 다시 시작
 document.getElementById('resetWrap').addEventListener('click', () => {
