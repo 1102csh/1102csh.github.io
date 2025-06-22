@@ -180,3 +180,9 @@ canvas {
         display: block;
     }
 }
+.contorlsHori {
+  display: flex;
+  justify-content: space-between;
+
+  width: 70%;
+}
