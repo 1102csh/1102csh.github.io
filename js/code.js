@@ -193,7 +193,7 @@ function loadStage(index) {
     rows = board.length;
     cols = board[0].length;
 
-    const baseSize = isMobile() ? 40 : 60;  // 모바일이면 셀 크기를 줄임
+    const baseSize = isMobileDevice() ? 40 : 60;  // 모바일이면 셀 크기를 줄임
 
     // 캔버스 크기 및 셀 크기 설정
     canvas.width = cols * baseSize;
