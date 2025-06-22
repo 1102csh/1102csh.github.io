@@ -152,3 +152,31 @@ canvas {
 .stage-selector.collapsed .stage-buttons {
   display: none;
 }
+
+#controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    text-align: center;
+}
+
+#controls button {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    margin: 5px;
+}
+
+/* 기본적으로 숨김 처리 */
+#controls {
+    display: none;
+}
+
+/* 화면 너비가 768px 이하일 때만 보이게 */
+@media screen and (max-width: 768px) {
+    #controls {
+        display: block;
+    }
+}
