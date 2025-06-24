@@ -5,7 +5,7 @@ const scoreText = document.getElementById("score");
 let board = [];
 let goalPositions = [];
 let score = 0;
-let currentStageIndex = 0;
+let currentStageIndex = 6;
 let rows = 0;
 let cols = 0;
 let cellWidth = 0;
@@ -135,6 +135,23 @@ const stages = [
             [8,  11, 11, 10, 12,  7, 1],
             [13, 13, 13,  0, 14, 14, 1]
         ]   
+    },
+    {
+        board: [
+            [ 2, 2,  3,  4],
+            [ 2, 2,  5,  5],
+            [ 6, 8, 10,  9],
+            [ 7, 8,  9, 11],
+        ]
+    },
+    {
+        board: [
+            [2, 2,  3, 4, 4],
+            [2, 2,  3, 4, 4],
+            [5, 5,  6, 7, 7],
+            [8, 8, 10, 9, 9],
+            [8, 8, 10, 9, 9]
+        ]
     }
 ];
 
@@ -230,6 +247,91 @@ function loadStage(index) {
     scoreText.innerText = 0;
     drawBoard();
 }
+
+////////////////////// Path Finder /////////////////////////////
+function isClearable(board, goalPositions) {
+    const rows = board.length;
+    const cols = board[0].length;
+    const key = (r, c) => `${r},${c}`;
+
+    // 🔍 2번 블럭 덩어리 찾기
+    function findGroup(value) {
+        const visited = {};
+        const stack = [];
+        const group = [];
+
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                if (board[r][c] === value) {
+                    stack.push([r, c]);
+                    visited[key(r, c)] = true;
+                    break;
+                }
+            }
+            if (stack.length) break;
+        }
+
+        while (stack.length) {
+            const [r, c] = stack.pop();
+            group.push({ row: r, col: c });
+            for (const [dy, dx] of [[0,1],[1,0],[0,-1],[-1,0]]) {
+                const nr = r + dy, nc = c + dx;
+                if (
+                    nr >= 0 && nr < rows && nc >= 0 && nc < cols &&
+                    board[nr][nc] === 2 && !visited[key(nr, nc)]
+                ) {
+                    visited[key(nr, nc)] = true;
+                    stack.push([nr, nc]);
+                }
+            }
+        }
+        return group;
+    }
+
+    function serialize(group) {
+        return group.map(p => `${p.row},${p.col}`).sort().join('|');
+    }
+
+    const initialGroup = findGroup(2);
+    const visited = new Set();
+    const queue = [initialGroup];
+
+    visited.add(serialize(initialGroup));
+
+    while (queue.length > 0) {
+        const currentGroup = queue.shift();
+
+        // 🏁 클리어 조건 검사
+        const allOnGoal = goalPositions.every(goal =>
+            currentGroup.some(p => p.row === goal.row && p.col === goal.col)
+        );
+        if (allOnGoal) return true;
+
+        for (const [dy, dx] of [[0,1],[1,0],[0,-1],[-1,0]]) {
+            const nextGroup = currentGroup.map(({ row, col }) => ({
+                row: row + dy,
+                col: col + dx
+            }));
+
+            const canMove = nextGroup.every(({ row, col }) =>
+                row >= 0 && row < rows &&
+                col >= 0 && col < cols &&
+                (board[row][col] === 0 || board[row][col] === 9 || currentGroup.some(p => p.row === row - dy && p.col === col - dx))
+            );
+
+            if (!canMove) continue;
+
+            const serialized = serialize(nextGroup);
+            if (visited.has(serialized)) continue;
+
+            visited.add(serialized);
+            queue.push(nextGroup);
+        }
+    }
+
+    return false; // 경로 없음
+}
+///////////////////////////////////////////////////////////////////
 
 // 보드 그리기
 function drawBoard() {
@@ -441,3 +543,6 @@ updateStageButtons();
 
 // 시작
 loadStage(currentStageIndex);
+
+const clearable = isClearable(board, goalPositions);
+console.log(clearable ? "Possible" : "Impossible");
