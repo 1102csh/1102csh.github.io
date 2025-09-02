@@ -90,7 +90,7 @@
   {
     "title": "2048",
     "desc": "웹 기반 2048 게임",
-    "link": "https://1102csh.github.io/1102csh/2048",
+    "link": "https://1102csh.github.io/2048",
     "repo": "https://github.com/1102csh/2048",
     "tags": [
       "게임",
@@ -124,7 +124,7 @@
   {
     "title": "미궁 퍼즐",
     "desc": "웹 기반 미궁 퍼즐",
-    "link": "https://1102csh.github.io/1102csh/hobby",
+    "link": "https://1102csh.github.io/hobby",
     "repo": "https://github.com/1102csh/hobby",
     "tags": [
       "게임",
