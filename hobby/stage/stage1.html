@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>???</title>
+
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/pad.css" rel="stylesheet">
+    <link href="../css/stage1.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <!-- 햄버거 버튼 -->
+        <button class="menu" id="menu" aria-label="메뉴 열기" aria-expanded="false" aria-controls="drawer">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+    </header>
+
+    <!-- SideBar -->
+    <sidebar>
+        <!-- 네비게이션 메뉴 -->
+        <nav id="drawer" class="drawer" role="navigation">
+            <ul>
+                <li><a href="#">잠긴 옵션</a></li>
+                <li><a href="#">잠긴 옵션</a></li>
+                <li><a href="#">잠긴 옵션</a></li>
+                <li><a href="#">잠긴 옵션</a></li>
+            </ul>
+        </nav>
+    </sidebar>
+
+    <!-- 배경 오버레이 -->
+    <div id="backdrop" class="backdrop" aria-hidden="true"></div>
+
+    <!-- Section -->
+    <section>
+        <!-- 메인 컨텐츠 -->
+        <div class="title"># 1</div>
+
+        <div class="board">
+            <div class="attempWrap">
+                <div class="attempDot" id="attemp0"></div>
+                <div class="attempDot" id="attemp1"></div>
+                <div class="attempDot" id="attemp2"></div>
+                <div class="attempDot" id="attemp3"></div>
+                <div class="attempDot" id="attemp4"></div>
+                <div class="attempDot" id="attemp5"></div>
+            </div>
+
+            <div class="answerWrap">
+                <div class="answerDot" id="anwser0"></div>
+                <div class="answerDot" id="anwser1"></div>
+                <div class="answerDot" id="anwser2"></div>
+                <div class="answerDot" id="anwser3"></div>
+            </div>
+
+            <div id="output"></div>
+            <div class="padWrap">
+                <div class="padRow">
+                    <div class="pad" id="pad1">1</div>
+                    <div class="pad" id="pad1">2</div>
+                    <div class="pad" id="pad1">3</div>
+                </div>
+                <div class="padRow">
+                    <div class="pad" id="pad1">4</div>
+                    <div class="pad" id="pad1">5</div>
+                    <div class="pad" id="pad1">6</div>
+                </div>
+                <div class="padRow">
+                    <div class="pad" id="pad1">7</div>
+                    <div class="pad" id="pad1">8</div>
+                    <div class="pad" id="pad1">9</div>
+                </div>
+                <div class="padRow">
+                    <div class="pad" id="pad1">←</div>
+                    <div class="pad" id="pad1">0</div>
+                    <div class="pad" id="pad1">▶</div>
+                </div>
+            </div>
+            <div id="retry">⟳</div>
+        </div>
+    </section>
+
+    <script src="../js/stage1.js"></script>
+    <script src="../js/util.js"></script>
+</body>
+
+</html>
