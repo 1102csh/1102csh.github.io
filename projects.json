@@ -1,0 +1,133 @@
+[
+  {
+    "title": "DrawingQuiz",
+    "desc": "JAVA 기반 소켓 통신 스케치 퀴즈 게임",
+    "link": "https://github.com/1102csh/DrawingQuiz",
+    "repo": "https://github.com/1102csh/DrawingQuiz",
+    "tags": [
+      "Java",
+      "소켓",
+      "게임"
+    ],
+    "year": 2022,
+    "emoji": "🎨"
+  },
+  {
+    "title": "SunmoonTalk",
+    "desc": "웹 기반 교내 랜덤 채팅 서비스",
+    "link": "https://github.com/1102csh/SunmoonTalk",
+    "repo": "https://github.com/1102csh/SunmoonTalk",
+    "tags": [
+      "웹",
+      "채팅"
+    ],
+    "year": 2023,
+    "emoji": "💬"
+  },
+  {
+    "title": "중고팜",
+    "desc": "React Native 기반 모바일 중고 거래 및 경매 거래 앱",
+    "link": "https://github.com/1102csh/JoongGoFarm",
+    "repo": "https://github.com/1102csh/JoongGoFarm",
+    "tags": [
+      "React Native",
+      "모바일",
+      "거래"
+    ],
+    "year": 2023,
+    "emoji": "📱"
+  },
+  {
+    "title": "AI 기반 영상 편집기",
+    "desc": "웹 기반 AI 활용 상황에 맞는 효과음 자동 생성 및 영상 편집",
+    "link": "https://github.com/1102csh/AiSoundVideoTool",
+    "repo": "https://github.com/1102csh/AiSoundVideoTool",
+    "tags": [
+      "AI",
+      "영상",
+      "웹"
+    ],
+    "year": 2024,
+    "emoji": "🎬"
+  },
+  {
+    "title": "moveBlockPuzzle",
+    "desc": "웹 기반 블럭 이동 퍼즐 게임",
+    "link": "https://github.com/1102csh/moveBlockPuzzle",
+    "repo": "https://github.com/1102csh/moveBlockPuzzle",
+    "tags": [
+      "게임",
+      "퍼즐",
+      "웹"
+    ],
+    "emoji": "🧱"
+  },
+  {
+    "title": "hammingCode_Calculator (legacy)",
+    "desc": "Hamming Code 계산기 (구버전)",
+    "link": "https://github.com/1102csh/hammingCode-old-",
+    "repo": "https://github.com/1102csh/hammingCode-old-",
+    "tags": [
+      "알고리즘",
+      "도구",
+      "레거시"
+    ],
+    "emoji": "🧮"
+  },
+  {
+    "title": "hammingCode_Calculator (new)",
+    "desc": "Hamming Code 계산기 (신버전)",
+    "link": "https://github.com/1102csh/hammingCode_Calculator",
+    "repo": "https://github.com/1102csh/hammingCode_Calculator",
+    "tags": [
+      "알고리즘",
+      "도구"
+    ],
+    "emoji": "🧮"
+  },
+  {
+    "title": "2048",
+    "desc": "웹 기반 2048 게임",
+    "link": "https://github.com/1102csh/2048",
+    "repo": "https://github.com/1102csh/2048",
+    "tags": [
+      "게임",
+      "웹"
+    ],
+    "emoji": "🔢"
+  },
+  {
+    "title": "알고리즘 공부 기록",
+    "desc": "백준 알고리즘 문제 풀이",
+    "link": "https://github.com/1102csh/BaekJoon",
+    "repo": "https://github.com/1102csh/BaekJoon",
+    "tags": [
+      "알고리즘",
+      "백준"
+    ],
+    "emoji": "📘"
+  },
+  {
+    "title": "WebQuizGame",
+    "desc": "웹 기반 퀴즈게임",
+    "link": "https://github.com/1102csh/WebQuizgame",
+    "repo": "https://github.com/1102csh/WebQuizgame",
+    "tags": [
+      "게임",
+      "웹"
+    ],
+    "emoji": "🧠"
+  },
+  {
+    "title": "미궁 퍼즐",
+    "desc": "웹 기반 미궁 퍼즐",
+    "link": "https://github.com/1102csh/hobby",
+    "repo": "https://github.com/1102csh/hobby",
+    "tags": [
+      "게임",
+      "퍼즐",
+      "웹"
+    ],
+    "emoji": "🧩"
+  }
+]

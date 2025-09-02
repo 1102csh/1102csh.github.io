@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>포트폴리오 · 1102csh</title>
+  <meta name="description" content="웹 포트폴리오 · HTML/CSS/JS 프로젝트 링크 모음" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <meta name="color-scheme" content="light dark" />
+  <style>
+    :root {
+      --bg: #0b0c10;
+      --bg-elev: #121319;
+      --text: #e8e9ec;
+      --muted: #b7bcc7;
+      --brand: #8ab4ff;
+      --chip: #1d2030;
+      --card: #151823;
+      --ring: #3c6fff;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f7f8fb;
+        --bg-elev: #ffffff;
+        --text: #1b1f2a;
+        --muted: #4b5563;
+        --brand: #2563eb;
+        --chip: #eef2ff;
+        --card: #ffffff;
+        --ring: #93c5fd;
+      }
+    }
+    :root.light {
+      --bg: #f7f8fb;
+      --bg-elev: #ffffff;
+      --text: #1b1f2a;
+      --muted: #4b5563;
+      --brand: #2563eb;
+      --chip: #eef2ff;
+      --card: #ffffff;
+      --ring: #93c5fd;
+    }
+    :root.dark {
+      --bg: #0b0c10;
+      --bg-elev: #121319;
+      --text: #e8e9ec;
+      --muted: #b7bcc7;
+      --brand: #8ab4ff;
+      --chip: #1d2030;
+      --card: #151823;
+      --ring: #3c6fff;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Apple SD Gothic Neo, "맑은 고딕", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 80% -10%, #1e2440 0%, transparent 50%), var(--bg);
+      line-height: 1.55;
+    }
+    a { color: inherit; }
+    .wrap { width: min(1100px, 92vw); margin: 0 auto; padding: 24px 0 64px; }
+
+    /* Header */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 12px 0 8px;
+      position: sticky; top: 0; background: linear-gradient(to bottom, var(--bg), color-mix(in oklab, var(--bg), transparent 40%));
+      backdrop-filter: blur(6px); z-index: 10;
+    }
+    .brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .brand img { width:28px; height:28px; }
+    .brand strong { font-weight: 700; }
+    nav a { text-decoration: none; margin-left: 14px; padding: 8px 10px; border-radius: 10px; color: var(--muted); }
+    nav a:hover, nav a:focus-visible { outline: none; color: var(--text); background: var(--chip); }
+
+    .mode {
+      border: 0; background: var(--chip); color: var(--text);
+      padding: 8px 10px; border-radius: 12px; cursor: pointer;
+    }
+    .mode:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+    /* Hero */
+    .hero {
+      display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center; padding: 24px 0 8px;
+    }
+    .hero h1 { font-size: clamp(28px, 4.5vw, 42px); margin: 0 0 8px; letter-spacing: -0.5px; }
+    .hero p { margin: 0 0 16px; color: var(--muted); }
+    .actions { display:flex; gap:10px; flex-wrap:wrap; }
+    .btn {
+      display:inline-flex; align-items:center; gap:8px; text-decoration:none; border-radius: 12px;
+      padding: 10px 14px; background: var(--brand); color: white; font-weight: 600;
+    }
+    .btn.ghost { background: var(--chip); color: var(--text); font-weight: 500; }
+    .btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+    .badgebar { display:flex; gap:8px; flex-wrap:wrap; margin-top: 8px; }
+    .badge { font-size: 12px; background: var(--chip); color: var(--muted); padding: 6px 8px; border-radius: 999px; }
+
+    .avatar {
+      background: var(--bg-elev); border-radius: 16px; padding: 18px; border: 1px solid color-mix(in oklab, var(--text), transparent 85%);
+      display:grid; place-items:center; aspect-ratio: 1/1;
+    }
+    .avatar img { width: 100%; max-width: 220px; filter: drop-shadow(0 10px 25px rgba(0,0,0,.25)); }
+
+    /* Filters/Search */
+    .toolbar {
+      display:flex; gap:12px; align-items:center; flex-wrap: wrap; justify-content: space-between; margin: 20px 0 6px;
+    }
+    .search {
+      flex:1 1 280px; display:flex; align-items:center; gap:10px; background: var(--bg-elev); border: 1px solid color-mix(in oklab, var(--text), transparent 85%);
+      padding: 10px 12px; border-radius: 12px;
+    }
+    .search input {
+      flex:1; border: 0; background: transparent; color: var(--text); outline: none; font-size: 16px;
+    }
+    .chips { display:flex; gap:8px; flex-wrap:wrap; }
+    .chip { padding: 8px 12px; background: var(--chip); border-radius: 999px; color: var(--muted); cursor: pointer; border: 1px solid transparent; }
+    .chip.active { color: var(--text); border-color: color-mix(in oklab, var(--brand), transparent 60%); }
+
+    /* Grid */
+    .grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 12px;
+    }
+    .card {
+      display:block; text-decoration:none; background: var(--card); border: 1px solid color-mix(in oklab, var(--text), transparent 85%);
+      border-radius: 16px; overflow: clip; transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; position: relative;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,.15); border-color: color-mix(in oklab, var(--brand), transparent 60%); }
+    .thumb { aspect-ratio: 16/9; background: linear-gradient(135deg, color-mix(in oklab, var(--brand), black 75%), transparent); display:grid; place-items:center; }
+    .thumb img { width:100%; height:100%; object-fit:cover; }
+    .thumb .emoji { font-size: 42px; opacity: .9; }
+    .content { padding: 14px 14px 16px; }
+    .content h3 { margin: 0 0 6px; font-size: 18px; }
+    .desc { color: var(--muted); margin: 0 0 12px; }
+    .meta { display:flex; align-items:center; justify-content: space-between; gap: 10px; }
+    .tags { display:flex; gap:6px; flex-wrap:wrap; }
+    .tag { font-size: 12px; background: var(--chip); color: var(--muted); padding: 4px 8px; border-radius: 999px; }
+    .pill { font-size: 12px; color: var(--muted); }
+
+    /* Sections */
+    section { padding: 36px 0 14px; }
+    h2 { font-size: 20px; margin: 0 0 10px; }
+    .about, .contact { background: var(--bg-elev); border: 1px solid color-mix(in oklab, var(--text), transparent 85%); border-radius: 16px; padding: 16px; }
+
+    footer { margin-top: 24px; color: var(--muted); font-size: 14px; text-align: center; }
+
+    @media (max-width: 840px) {
+      .hero { grid-template-columns: 1fr; }
+      .avatar { order: -1; }
+    }
+  </style>
+</head>
+<body>
+  <noscript>이 사이트는 자바스크립트를 사용합니다. 브라우저에서 JavaScript가 비활성화되어 있으면 일부 기능이 작동하지 않을 수 있습니다.</noscript>
+  <div class="wrap">
+    <header>
+      <a class="brand" href="#top" aria-label="홈으로 이동">
+        <img src="assets/favicon.svg" alt="" />
+        <strong>1102csh</strong>
+      </a>
+      <nav>
+        <a href="#projects">Projects</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <button class="mode" id="modeBtn" type="button" aria-label="테마 전환">🌓</button>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-label="소개">
+        <div>
+          <h1>프론트엔드 &nbsp;·&nbsp; 웹 포트폴리오</h1>
+          <p>HTML/CSS/JS 기반의 사이드 프로젝트와 학습 결과물을 정리했습니다. 각 카드를 클릭하면 <b>실행 페이지</b>나 <b>깃허브 저장소</b>로 바로 이동합니다.</p>
+          <div class="actions">
+            <a class="btn" href="#projects">프로젝트 보기</a>
+            <a class="btn ghost" href="mailto:contact@example.com">이메일 연락</a>
+          </div>
+          <div class="badgebar" aria-label="기술 스택">
+            <span class="badge">HTML</span><span class="badge">CSS</span><span class="badge">JavaScript</span><span class="badge">Node.js</span><span class="badge">GitHub Pages</span>
+          </div>
+        </div>
+        <div class="avatar" aria-hidden="true">
+          <img src="assets/preview.svg" alt=""/>
+        </div>
+      </section>
+
+      <section id="projects" aria-label="프로젝트">
+        <h2>Projects</h2>
+
+        <div class="toolbar">
+          <div class="search" role="search">
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.71.71l.27.28v.79l5 4.99L20.49 19l-4.99-5m-6 0A4.5 4.5 0 1 1 14 9.5 4.494 4.494 0 0 1 9.5 14"/></svg>
+            <input id="q" type="search" placeholder="검색: 제목, 설명, 태그…" aria-label="프로젝트 검색" />
+          </div>
+          <div class="chips" id="chipbar" aria-label="태그 필터"></div>
+        </div>
+
+        <div class="grid" id="grid" role="list"></div>
+      </section>
+
+      <section id="about" aria-label="소개">
+        <h2>About</h2>
+        <div class="about">
+          <p>웹 개발을 좋아하고, 사용자 경험과 성능을 함께 고민합니다. 이 포트폴리오는 정적 사이트로, GitHub Pages에 배포되어 있습니다.</p>
+          <p>아래 Contact 섹션이나 상단 이메일 버튼으로 언제든 연락해 주세요.</p>
+        </div>
+      </section>
+
+      <section id="contact" aria-label="연락처">
+        <h2>Contact</h2>
+        <div class="contact">
+          <p><b>이메일</b> · <a href="mailto:contact@example.com">contact@example.com</a></p>
+          <p><b>GitHub</b> · <a href="https://github.com/1102csh" target="_blank" rel="noopener">github.com/1102csh</a></p>
+        </div>
+      </section>
+    </main>
+
+    <footer>© <span id="year"></span> 1102csh. All rights reserved.</footer>
+  </div>
+
+  <script type="module">
+    // ---- Theme ----
+    const root = document.documentElement;
+    const modeBtn = document.getElementById('modeBtn');
+    const saved = localStorage.getItem('theme');
+    if (saved) root.classList.add(saved);
+    modeBtn.addEventListener('click', () => {
+      const isDark = root.classList.toggle('dark');
+      root.classList.toggle('light', !isDark);
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    // ---- Data ----
+    const DEFAULTS = [
+      {
+        title: "웹 퀴즈 게임",
+        desc: "Node.js / WebSocket / MariaDB 기반 2~8인 실시간 퀴즈",
+        link: "https://1102csh.github.io/web-quiz-game/",
+        repo: "https://github.com/1102csh/web-quiz-game",
+        tags: ["게임", "실시간", "웹소켓"],
+        year: 2025,
+        emoji: "🧠"
+      },
+      {
+        title: "타이핑 효과 엔진",
+        desc: "장면 전환, 타자 소리 포함한 타입라이터 스크립트",
+        link: "https://1102csh.github.io/typewriter-demo/",
+        repo: "https://github.com/1102csh/typewriter-demo",
+        tags: ["UI", "애니메이션"],
+        year: 2025,
+        emoji: "⌨️"
+      },
+      {
+        title: "Canvas 퍼즐",
+        desc: "순수 JS Canvas로 구현한 논리 퍼즐 모음",
+        link: "https://1102csh.github.io/canvas-puzzles/",
+        repo: "https://github.com/1102csh/canvas-puzzles",
+        tags: ["게임", "Canvas"],
+        year: 2024,
+        emoji: "🧩"
+      },
+      {
+        title: "반응형 포트폴리오",
+        desc: "접근성과 다크모드가 포함된 정적 포트폴리오 템플릿",
+        link: "https://1102csh.github.io/portfolio/",
+        repo: "https://github.com/1102csh/portfolio",
+        tags: ["템플릿", "접근성"],
+        year: 2025,
+        emoji: "🗂️"
+      },
+      {
+        title: "REST API 실습",
+        desc: "Postman과 Express로 회원가입/로그인 예제",
+        link: "https://1102csh.github.io/rest-auth-demo/",
+        repo: "https://github.com/1102csh/rest-auth-demo",
+        tags: ["백엔드", "학습"],
+        year: 2024,
+        emoji: "🔐"
+      },
+      {
+        title: "도트 아트 갤러리",
+        desc: "픽셀 아트와 어두운 무드의 웹 갤러리",
+        link: "https://1102csh.github.io/pixel-gallery/",
+        repo: "https://github.com/1102csh/pixel-gallery",
+        tags: ["아트", "갤러리"],
+        year: 2025,
+        emoji: "🖼️"
+      }
+    ];
+
+    let PROJECTS = [];
+    try {
+      const res = await fetch('./projects.json', { cache: 'no-store' });
+      if (res.ok) PROJECTS = await res.json();
+      else PROJECTS = DEFAULTS;
+    } catch (e) {
+      PROJECTS = DEFAULTS;
+    }
+
+    // ---- Render ----
+    const grid = document.getElementById('grid');
+    const chipbar = document.getElementById('chipbar');
+    const q = document.getElementById('q');
+    const year = document.getElementById('year');
+
+    year.textContent = new Date().getFullYear();
+
+    // Build tags
+    const allTags = Array.from(new Set(PROJECTS.flatMap(p => p.tags || []))).sort((a,b)=>a.localeCompare(b,'ko'));
+    const active = new Set();
+
+    function tagChip(name) {
+      const b = document.createElement('button');
+      b.className = 'chip';
+      b.textContent = name;
+      b.type = 'button';
+      b.addEventListener('click', () => {
+        if (active.has(name)) active.delete(name); else active.add(name);
+        b.classList.toggle('active');
+        render();
+      });
+      return b;
+    }
+    if (allTags.length) {
+      chipbar.append(...allTags.map(tagChip));
+    }
+
+    function match(project, term) {
+      if (!term) return true;
+      const hay = [project.title, project.desc, ...(project.tags||[])].join(' ').toLowerCase();
+      return hay.includes(term.toLowerCase());
+    }
+    function matchTags(project) {
+      if (!active.size) return true;
+      return (project.tags||[]).some(t => active.has(t));
+    }
+
+    function createCard(p) {
+      const a = document.createElement('a');
+      a.className = 'card';
+      a.href = p.link || p.repo || '#';
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.role = 'listitem';
+      a.ariaLabel = `${p.title} 열기`;
+
+      const thumb = document.createElement('div');
+      thumb.className = 'thumb';
+      if (p.thumb) {
+        const img = document.createElement('img');
+        img.alt = '';
+        img.loading = 'lazy';
+        img.src = p.thumb;
+        thumb.appendChild(img);
+      } else {
+        const em = document.createElement('div');
+        em.className = 'emoji';
+        em.textContent = p.emoji || '🌐';
+        thumb.appendChild(em);
+      }
+
+      const content = document.createElement('div');
+      content.className = 'content';
+      const h3 = document.createElement('h3');
+      h3.textContent = p.title;
+      const desc = document.createElement('p');
+      desc.className = 'desc';
+      desc.textContent = p.desc || '';
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      const tags = document.createElement('div');
+      tags.className = 'tags';
+      (p.tags||[]).forEach(t => {
+        const s = document.createElement('span'); s.className = 'tag'; s.textContent = t; tags.appendChild(s);
+      });
+      const pill = document.createElement('span');
+      pill.className = 'pill';
+      pill.textContent = p.year ? String(p.year) : '';
+
+      meta.append(tags, pill);
+      content.append(h3, desc, meta);
+      a.append(thumb, content);
+      return a;
+    }
+
+    function render() {
+      const term = q.value.trim();
+      const filtered = PROJECTS
+        .filter(p => match(p, term))
+        .filter(p => matchTags(p))
+        .sort((a,b) => (b.year||0) - (a.year||0) || a.title.localeCompare(b.title, 'ko'));
+
+      grid.replaceChildren(...filtered.map(createCard));
+
+      if (!filtered.length) {
+        const empty = document.createElement('div');
+        empty.style.color = 'var(--muted)';
+        empty.textContent = '조건에 맞는 프로젝트가 없습니다.';
+        grid.replaceChildren(empty);
+      }
+    }
+    q.addEventListener('input', render);
+
+    render();
+  </script>
+</body>
+</html>
