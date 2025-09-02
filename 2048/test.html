@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+    <link href="./style.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div class="board">
+        <div class="logo">2048</div>
+        <div class="score_wrap">
+            <b>&nbspScore</b>
+            <div id="score">0</div>
+        </div>
+        <div class="best_wrap">
+            <b>&nbspBest</b>
+            <div id="best"></div>
+        </div>
+        <input class="btn" type="button" value="New Game" onclick=reset()>
+        <div id="board">
+        </div>
+    </div>
+    <div id="gameover">
+        <div class="gameover"></div>
+        <span class="over">GAME OVER</span>
+    </div>
+    <script src="./code.js"></script>
+</body>
+</html>
