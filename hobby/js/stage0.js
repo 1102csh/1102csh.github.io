@@ -1,4 +1,3 @@
-// ✅ 유효성 규칙: 4자리 숫자 (원하면 여기만 바꾸면 됨)
 const password = 1234;
 
 (function init() {
@@ -21,7 +20,7 @@ const password = 1234;
         }
 
         // 클릭/엔터로 전환
-        const go = () => location.href = './stage/stage1.html';
+        const go = () => location.href = './stage1.html';
         btn.addEventListener('click', go);
         btn.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
