@@ -43,7 +43,6 @@
 
     const b10 = findByName('B10');
     if (b10 && b10.vol === 8){
-      statusEl.textContent = '성공! 다음 단계로 진행할 수 있어요.';
       enterBtn.classList.add('show');
     } else {
       statusEl.textContent = '';
